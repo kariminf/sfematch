@@ -30,13 +30,14 @@ to identify yourself via a `mailto` param — set OPENALEX_EMAIL below
 if you want that.
 """
 
-from __future__ import annotations
+
 
 import json
 from dataclasses import dataclass, field, asdict
 from typing import Optional, Union, List
 
 import requests
+from . import Work, AuthorCandidate
 
 BASE_URL = "https://api.openalex.org"
 
@@ -60,26 +61,19 @@ def _short_id(openalex_id: str) -> str:
     return openalex_id.rstrip("/").split("/")[-1]
 
 
-def get_ids(name: str, per_page: int = 5) -> List[str]:
+def get_ids(name: str, per_page: int = 5) -> List[AuthorCandidate]:
     """
-    Search OpenAlex for an author by name and return a list of OpenAlex IDs
-    for all matches (e.g. ['https://openalex.org/A5023888391', ...]).
+    Search OpenAlex for authors matching a name.
 
-    Returns an empty list if nothing was found.
-    """
-    resp = requests.get(
-        f"{BASE_URL}/authors",
-        params={**_common_params(), "search": name, "per-page": per_page},
-    )
-    resp.raise_for_status()
-    results = resp.json().get("results", [])
+    Args:
+        name: full name to search, e.g. "Jason Priem"
+        per_page: cap on number of results returned
 
-    return [r["id"] for r in results]
-
-def get_candidates(name: str, per_page: int = 5) -> List[dict]:
-    """
-    Returns a list of candidate matches with enough info to disambiguate:
-    id, display_name, and last known institution.
+    Returns:
+        List of AuthorCandidate, ordered by OpenAlex's relevance ranking.
+        affiliation is the author's last known institution, when OpenAlex
+        has one on record. email_domain and interests are always None / []
+        — OpenAlex doesn't expose either.
     """
     resp = requests.get(
         f"{BASE_URL}/authors",
@@ -89,27 +83,33 @@ def get_candidates(name: str, per_page: int = 5) -> List[dict]:
     results = resp.json().get("results", [])
 
     return [
-        {
-            "id": r["id"].split("/")[-1],
-            "display_name": r.get("display_name"),
-            "institution": (r.get("last_known_institution") or {}).get("display_name"),
-            "works_count": r.get("works_count"),
-        }
+        AuthorCandidate(
+            id=r["id"].split("/")[-1],
+            name=r.get("display_name", ""),
+            affiliation=(r.get("last_known_institution") or {}).get("display_name"),
+        )
         for r in results
     ]
 
-def get_works(author_id: str, url: Optional[str] = None, per_page: int = 100) -> List[dict]:
+def get_works(author_id: str, url: Optional[str] = None, per_page: int = 100) -> List[Work]:
     """
     Fetch all works for a given OpenAlex author id (paginates automatically
     via cursor paging, so you get everything, not just the first page).
 
     If `url` is given, the raw list of works is also saved there as JSON.
 
-    Returns a list of raw OpenAlex "work" dicts.
+    Args:
+        author_id: OpenAlex author id, e.g. "A5023888391" or the full
+            "https://openalex.org/A5023888391" URL
+        url: optional file path to also dump the raw OpenAlex work JSON to
+        per_page: page size for the underlying paginated requests
+
+    Returns:
+        List of Work.
     """
     author_filter = _short_id(author_id)
 
-    works: list[dict] = []
+    raw_works: list[dict] = []
     cursor = "*"
 
     while cursor:
@@ -125,12 +125,49 @@ def get_works(author_id: str, url: Optional[str] = None, per_page: int = 100) ->
         resp.raise_for_status()
         data = resp.json()
 
-        works.extend(data.get("results", []))
+        raw_works.extend(data.get("results", []))
         cursor = data.get("meta", {}).get("next_cursor")
 
     if url:
         with open(url, "w", encoding="utf-8") as f:
-            json.dump(works, f, ensure_ascii=False, indent=2)
+            json.dump(raw_works, f, ensure_ascii=False, indent=2)
+
+    works: List[Work] = []
+    for w in raw_works:
+        title = w.get("display_name") or w.get("title")
+
+        abstract = construct_abstract(w.get("abstract_inverted_index"))
+
+        primary_location = w.get("primary_location") or {}
+        link = primary_location.get("landing_page_url") or w.get("id")
+
+        authors = [
+            (a.get("author") or {}).get("display_name")
+            for a in w.get("authorships", [])
+        ]
+        authors = [a for a in authors if a]
+
+        source = primary_location.get("source") or {}
+        venue = source.get("display_name")
+        year = w.get("publication_year")
+        if venue and year:
+            venue = f"{venue} {year}"
+        elif not venue and year:
+            venue = str(year)
+
+        works.append(
+            Work(
+                id=_short_id(w.get("id", "")),
+                title=title,
+                year=year,
+                abstract=abstract,
+                link=link,
+                authors=authors,
+                keywords=[],  # see note below
+                language=w.get("language"),
+                venue=venue,
+            )
+        )
 
     return works
 
@@ -151,19 +188,6 @@ def construct_abstract(inverted_index: Optional[dict]) -> str:
     return " ".join(positions[i] for i in sorted(positions))
 
 
-@dataclass
-class Paper:
-    id: str
-    title: Optional[str]
-    abstract: str
-    link: Optional[str]
-    authors: list[str] = field(default_factory=list)
-    keywords: list[str] = field(default_factory=list)
-    language: Optional[str] = None
-
-    def to_dict(self) -> dict:
-        return asdict(self)
-
 
 def _primary_link(work: dict) -> Optional[str]:
     """Pick a single, best link for the work (landing page > OA url > OpenAlex id)."""
@@ -179,7 +203,7 @@ def _primary_link(work: dict) -> Optional[str]:
     return work.get("id")
 
 
-def extract_works(works_data: Union[list[dict], dict]) -> list[Paper]:
+def extract_works(works_data: Union[list[dict], dict]) -> list[Work]:
     """
     Take a works collection (either the list returned by get_works, or a raw
     OpenAlex response dict with a "results" key) and extract a minimal,
@@ -191,7 +215,7 @@ def extract_works(works_data: Union[list[dict], dict]) -> list[Paper]:
     if isinstance(works_data, dict):
         works_data = works_data.get("results", [])
 
-    works: list[Paper] = []
+    works: list[Work] = []
 
     for w in works_data:
         authors = [
@@ -207,7 +231,7 @@ def extract_works(works_data: Union[list[dict], dict]) -> list[Paper]:
             keywords = [c.get("display_name") for c in w.get("concepts", []) if c.get("display_name")]
 
         works.append(
-            Paper(
+            Work(
                 id=w.get("id"),
                 title=w.get("title"),
                 abstract=construct_abstract(w.get("abstract_inverted_index")),

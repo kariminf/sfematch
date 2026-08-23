@@ -19,5 +19,19 @@
 # limitations under the License.
 #
 
+import sys
+import os
 
-# No API 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from sfematch.collect.orcid import get_works, get_ids
+
+
+
+if __name__ == "__main__":
+    print("Google scholar get_works")
+    given, family = "Abdelkrime", "Aries"
+    ids = get_ids(given, family, max_results=2)
+    print(given, family, "ids", ids)
+    if len(ids):
+        print(ids[0].id, "works", get_works(ids[0].id))

@@ -19,5 +19,16 @@
 # limitations under the License.
 #
 
+import sys
+import os
 
-# No API 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from sfematch.collect.arxiv import get_works, extract_category
+
+
+
+if __name__ == "__main__":
+    print("arXiv get_works")
+    name = "Abdelkrime Aries"
+    print(name, get_works(name, max_results=2))

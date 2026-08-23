@@ -19,3 +19,35 @@
 # limitations under the License.
 #
 
+from __future__ import annotations
+
+from dataclasses import dataclass, field, asdict
+from typing import Optional, Union, List, TypedDict
+
+@dataclass
+class Work:
+    id: str
+    title: Optional[str]
+    year: Optional[str]
+    abstract: str
+    link: Optional[str]
+    authors: list[str] = field(default_factory=list)
+    keywords: list[str] = field(default_factory=list)
+    language: Optional[str] = None
+    venue: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
+class AuthorCandidate:
+    id: str
+    name: str
+    affiliation: Optional[str] = None
+    email: Optional[str] = None
+    interests: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+

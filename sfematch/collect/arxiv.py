@@ -19,10 +19,99 @@
 # limitations under the License.
 #
 
-import argparse
 import json
 import os
 import sys
+
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field, asdict
+from typing import Optional, List
+from . import Work
+
+ATOM_NS = "{http://www.w3.org/2005/Atom}"
+ARXIV_NS = "{http://arxiv.org/schemas/atom}"
+
+def get_works(name: str, max_results: int = 50) -> List[Work]:
+    """
+    Fetch works from arXiv authored by `name` (full name), using arXiv's
+    Atom API search interface.
+    """
+    base_url = "http://export.arxiv.org/api/query"
+    query = f'au:"{name}"'
+    params = {
+        "search_query": query,
+        "start": 0,
+        "max_results": max_results,
+        "sortBy": "submittedDate",
+        "sortOrder": "descending",
+    }
+    url = f"{base_url}?{urllib.parse.urlencode(params)}"
+
+    with urllib.request.urlopen(url) as response:
+        raw = response.read()
+
+    root = ET.fromstring(raw)
+    works: List[Work] = []
+
+    for entry in root.findall(f"{ATOM_NS}entry"):
+        arxiv_id = _text(entry, f"{ATOM_NS}id")
+        # arXiv id URLs look like http://arxiv.org/abs/XXXX.XXXXXvN
+        short_id = arxiv_id.rsplit("/", 1)[-1] if arxiv_id else ""
+
+        title = _text(entry, f"{ATOM_NS}title")
+        title = " ".join(title.split()) if title else None
+
+        abstract = _text(entry, f"{ATOM_NS}summary")
+        abstract = " ".join(abstract.split()) if abstract else ""
+
+        link = None
+        for link_el in entry.findall(f"{ATOM_NS}link"):
+            if link_el.attrib.get("type") == "text/html":
+                link = link_el.attrib.get("href")
+                break
+        if link is None:
+            link = arxiv_id
+
+        authors = [
+            _text(author, f"{ATOM_NS}name")
+            for author in entry.findall(f"{ATOM_NS}author")
+        ]
+        authors = [a for a in authors if a]
+
+        keywords = [
+            cat.attrib.get("term")
+            for cat in entry.findall(f"{ATOM_NS}category")
+            if cat.attrib.get("term")
+        ]
+
+        venue = _text(entry, f"{ARXIV_NS}journal_ref")
+        venue = " ".join(venue.split()) if venue else "arXiv"
+
+        year = _text(entry, f"{ATOM_NS}published")[:4] if _text(entry, f"{ATOM_NS}published") else None
+
+        works.append(
+            Work(
+                id=short_id,
+                title=title,
+                year=None,
+                abstract=abstract,
+                link=link,
+                authors=authors,
+                keywords=keywords,
+                language=None,  # arXiv metadata does not provide language
+                venue=venue,
+            )
+        )
+
+    return works
+
+
+def _text(elem: ET.Element, tag: str) -> Optional[str]:
+    child = elem.find(tag)
+    return child.text.strip() if child is not None and child.text else None
+
 
 
 def _matches_prefix(categories_str, prefix, primary_only=False):
