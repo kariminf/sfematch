@@ -1,0 +1,201 @@
+{
+    "Yann; LeCun": {
+        "openalex": [
+            {
+                "id": "A5001226970",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5113433465",
+                "name": "Yann Lecun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5147171442",
+                "name": "Laurent Najman Yann Lecun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5136272059",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5138295200",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "dblp": [
+            {
+                "id": "l/YannLeCun",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "orcid": [
+            {
+                "id": "0000-0002-1992-2684",
+                "name": "Yann LeCun",
+                "affiliation": "Association for Computing Machinery",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0009-0004-0706-6114",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ]
+    },
+    "Andrew; Tanenbaum": {
+        "openalex": [
+            {
+                "id": "A5048320589",
+                "name": "Andrew S. Tanenbaum",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5143005808",
+                "name": "Andrew Tanenbaum",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5074666190",
+                "name": "Tanenbaum Andrew",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5135022786",
+                "name": "Andrew S. (1944- ). Tanenbaum",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "dblp": [
+            {
+                "id": "t/AndrewSTanenbaum",
+                "name": "Andrew S. Tanenbaum",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "orcid": [
+            {
+                "id": "0000-0002-9547-801X",
+                "name": "Andrew Tanenbaum",
+                "affiliation": "Vrije Universiteit Amsterdam",
+                "email": null,
+                "interests": []
+            }
+        ]
+    },
+    "Robert J.; Kauffman": {
+        "openalex": [
+            {
+                "id": "A5082290474",
+                "name": "Robert J. Kauffman",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5105936917",
+                "name": "Kauffman",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5112368049",
+                "name": "Robert J. Kauffman Qizhi Dai",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5080472192",
+                "name": "Robert J. Kauffman Alina M. Chircu",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "A5006588170",
+                "name": "Dushyant Shekhawat",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "dblp": [
+            {
+                "id": "45/10663",
+                "name": "Robert J. Kauffman",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "orcid": [
+            {
+                "id": "0000-0002-3757-0010",
+                "name": "Robert J Kauffman",
+                "affiliation": "Carnegie Mellon University",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-4659-2043",
+                "name": "Zachary J. Kauffman",
+                "affiliation": "Beth Israel Deaconess Medical Center",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-4046-9108",
+                "name": "Ross Kauffman",
+                "affiliation": "Ohio Northern University",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-9020-2815",
+                "name": "J Boone Kauffman",
+                "affiliation": "Illahee Sciences International",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0003-4564-0362",
+                "name": "Leon Kauffman",
+                "affiliation": "U.S. Geological Survey",
+                "email": null,
+                "interests": []
+            }
+        ]
+    }
+}

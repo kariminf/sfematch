@@ -19,19 +19,3 @@
 # limitations under the License.
 #
 
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from sfematch.collect.dblp import get_works, get_ids
-
-
-
-if __name__ == "__main__":
-    print("DBLP get_works")
-    name = "Abdelkrime Aries"
-    ids = get_ids(name, max_results=2)
-    print(name, "ids", ids)
-    if len(ids):
-        print(ids[0].id, "works", get_works(ids[0].id))

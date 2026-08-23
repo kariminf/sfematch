@@ -1,0 +1,77 @@
+{
+    "XPRT0001": {
+        "given_names": [
+            "Yann"
+        ],
+        "family_name": "LeCun",
+        "additional_family_name": null,
+        "jury_name": "LECUN A.",
+        "employment_status": "Faculty",
+        "academic_rank": "Prof",
+        "organisation": "New York University",
+        "email": "",
+        "phone": "",
+        "profiles": {
+            "orcid": "0000-0002-1992-2684",
+            "openalex": "A5001226970",
+            "google_scholar": "WLN3QrAAAAAJ",
+            "researchgate": "",
+            "dblp": "l/YannLeCun",
+            "sciencedirect": "55666793600/yann-le-lecun",
+            "ieeexplore": "37087217367",
+            "linkedin": "yann-lecun/",
+            "github": "",
+            "website": "http://yann.lecun.com/"
+        }
+    },
+    "XPRT0002": {
+        "given_names": [
+            "Andrew", "Stuart"
+        ],
+        "family_name": "Tanenbaum",
+        "additional_family_name": null,
+        "jury_name": "TANENBAUM A.S.",
+        "employment_status": "Faculty",
+        "academic_rank": "Prof Em",
+        "organisation": "Vrije Universiteit, Amsterdam",
+        "email": "",
+        "phone": "",
+        "profiles": {
+            "orcid": "0000-0002-9547-801X",
+            "openalex": "A5048320589",
+            "google_scholar": "TvjaNqkAAAAJ",
+            "researchgate": "Andrew-Tanenbaum",
+            "dblp": "t/AndrewSTanenbaum",
+            "sciencedirect": "7003338413/andrew-s-tanenbaum",
+            "ieeexplore": "37269511900",
+            "linkedin": "",
+            "github": "",
+            "website": "https://www.cs.vu.nl/~ast/"
+        }
+    },
+    "XPRT0003": {
+        "given_names": [
+            "Robert"
+        ],
+        "family_name": "Kauffman",
+        "additional_family_name": null,
+        "jury_name": "KAUFFMAN R.J.",
+        "employment_status": "Faculty",
+        "academic_rank": "Prof Em",
+        "organisation": "Copenhagen Business School and Singapore Management University",
+        "email": "rkauffman@smu.edu.sg",
+        "phone": "+65 68280929",
+        "profiles": {
+            "orcid": "0000-0002-3757-0010",
+            "openalex": "A5082290474",
+            "google_scholar": "kFJVSnoAAAAJ",
+            "researchgate": "",
+            "dblp": "45/10663",
+            "sciencedirect": "35083571300/robert-j-kauffman",
+            "ieeexplore": "37356053400",
+            "linkedin": "rob-kauffman-6316a9110",
+            "github": "",
+            "website": "https://faculty.smu.edu.sg/profile/robert-j-kauffman-2351"
+        }
+    }
+}

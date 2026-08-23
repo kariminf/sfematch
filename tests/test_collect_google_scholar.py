@@ -34,4 +34,4 @@ if __name__ == "__main__":
     ids = get_ids(name, max_results=2)
     print(name, "ids", ids)
     if len(ids):
-        print(ids[0]["id"], "works", get_works(ids[0]["id"], max_results=5))
+        print(ids[0].id, "works", get_works(ids[0].id, max_results=5))

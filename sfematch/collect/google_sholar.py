@@ -22,25 +22,13 @@
 from dataclasses import dataclass, field, asdict
 from typing import Optional, List
 
-from scholarly import scholarly
+from scholarly import scholarly, ProxyGenerator
 
 from . import Work, AuthorCandidate
 
-
-
-def get_id(name: str) -> Optional[str]:
-    """
-    Look up a Google Scholar author profile by name and return their
-    scholar_id (unique identifier for their profile).
-    Returns None if no matching author is found.
-    """
-    search_query = scholarly.search_author(name)
-    try:
-        author = next(search_query)
-    except StopIteration:
-        return None
-    return author.get("scholar_id")
-
+pg = ProxyGenerator()
+success = pg.FreeProxies()  # free, but slow/unreliable
+scholarly.use_proxy(pg)
 
 def get_ids(name: str, max_results: Optional[int] = None) -> List[AuthorCandidate]:
     """
