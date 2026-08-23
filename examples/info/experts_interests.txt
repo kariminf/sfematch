@@ -1,0 +1,27 @@
+XPRT0001
+google_scholar: AI; machine learning; computer vision; robotics; image compression
+researchgate:
+sciencedirect: Confusion Matrix; Seizure Prediction; Neural Network; Confusion Matrix; Support Vector Machine; Deep Learning; Ictal; Deep Learning; Support Vector Machine; Gaussian Distribution; Artificial Intelligence
+ieeexplore: Language Model; Self-supervised Learning; Linear Probe; Visual Question Answering; Diffusion Model; ImageNet; Latent Space; Learning Rate; Model Performance; Model Size; Neural Network; Pre-trained Encoder; Predictive Performance; Representation Learning; Self-supervised Learning Methods; Transformer Model; Vision Transformer; Visual Capabilities; Visual Learning; Visual Model; 2D Keypoints; Ability Of The Model; Active Learning; Active Learning Strategies; Active Strategies; AdamW Optimizer; Adaptive Dropout; Affine Parameter; Agentic; Attention Block; Autoregressive Model; Average Performance; Basic Questions; Batch Normalization; Bayesian Neural Network; Behavior Scale; Bounding Box; Camera Frame; Camera Intrinsics; Capability Of Model; Classification Task; Control Video; Coordinate Frame; Data Augmentation; Data Distribution; Data Visualization; Deep Learning; Deep Network; Deep Neural Network; Deeper Layers
+linkedin:
+orcid: machine learning; computer vision; robotics; neural networks; pattern recognition; data science
+Teaching: Machine Learning and Pattern Recognition; Introduction to Robotics; Mobile Robotics
+
+XPRT0002
+google_scholar: Operating systems
+researchgate: Fault Tolerance
+sciencedirect: Authentication Protocol; Buffer Overflow; byzantine fault tolerance; Radio Frequency Identification; Malware; Key Authentication; Authentication; Structured Query Language
+ieeexplore: Operating System; Runtime Overhead; Software Defect; Memory Usage; Runtime Performance; Server Program; System Calls; Address Space; Checkpointing; Code Size; Defect Model; Fault-tolerant; Geometric Mean; Impact Of Defects; Large Base; Linux Kernel; Performance Overhead; Race Conditions; Recovery Error; Running Program; Semantic; Shared Object; Static Analysis; Types Of Defects; Virtual Machines; Work In This Area; Active Faults; Annotation Efforts; Application Server; Binary Code; Binary Files; Binary Search; Binary Tree; Building Systems; CPU Usage; Client Requests; Code Generation; Compile Time; Components Of System; Compression Algorithm; Compression Scheme; Conditional Branches; Conservation Strategies; Conservation Techniques; Contextual Information; Control Flow Graph; Corrupted Data; Data Structure; Debugging; Default Configuration
+linkedin:
+orcid:
+Teaching: Computer Networks; Computer Organization; Distributed Systems; Grant Proposal Writing; Operating Systems; Programming Languages
+
+XPRT0003
+google_scholar: Information Strategy; Economics of ISE-Commerce; Financial Services and Technology; IT and Pricing
+researchgate:
+sciencedirect: Natural Gas Combined Cycle; Cryptocurrency; Blockchain; Survival Analysis; Cloud Computing Service; Development of Economics; Generalized Autoregressive Conditional Heteroskedasticity; Diffusion Model; Metropolitan Area; Development of Economics; Data Analytics; Technology-Innovation
+ieeexplore: Basic Package; Dependent Variable; Household Level; Marketing; Mechanical Design; Mobile Data; Payment System; Pricing Strategy; Service Quality; Sharing Economy; Add-on Package; Bandwidth Changes; Bandwidth Consumption; Basic Groups; Behavior Of Banks; Best Response; Binomial Model; Broadband Internet Services; Broadband Services; Central Bank; Central System; Changes In Services; Choice Of Bandwidth; Clear Preference; Cloud Computing; Commercial Banks; Competitive Marketplace; Competitive Strategy; Complementarity Effects; Consumer Purchase Behavior; Consumer Surplus; Content Categories; Content Consumption; Cost Efficiency; Cost Of Services; Count Data Models; Covariance Matrix; Credit Risk; Customer Experience; Daily Minutes; Data Recovery; Delay Cost; Different Types Of Services; Digital Content; Digital Entertainment; Dominant Strategy; Economic Agents; Effective Sample; Effective Services; Elasticity Of Demand
+linkedin:
+orcid:
+Teaching: Information Systems Management; IS and Electronic Commerce Research Seminar; Project Management; Systems Analysis and Design; Introduction to E-Commerce / Advanced E-Commerce; Decision Technologies; Decision Support and Expert Systems; Information Technology in Business; Digital Banking and Fintech; Banking Products and Processes; IS and Management Research; Finance Foundations for FinTech
+

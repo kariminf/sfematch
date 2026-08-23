@@ -54,7 +54,6 @@ def clean_text(text):
 def json_to_tsv(
     input_path,
     output=None,
-    fields=None,
     domain="cs",
     progress_every=100_000,
 ):
@@ -71,9 +70,6 @@ def json_to_tsv(
     output : str or None
         Path to the output .tsv file. Defaults to
         "<input_path_without_ext>.tsv".
-    fields : list[str] or None
-        List of category codes to create binary (1/0) columns for, e.g.
-        ["cs.LG", "cs.CV"]. If None, uses DOMAIN_FIELDS[domain].
     domain : str
         Which predefined domain constant to use when `fields` is None.
         One of: "cs" (default), "math", "stat", "q-bio", "q-fin", "eess",
@@ -88,13 +84,7 @@ def json_to_tsv(
     if not os.path.isfile(input_path):
         raise FileNotFoundError(f"Input file not found: {input_path}")
 
-    if fields is None:
-        if domain not in DOMAIN_FIELDS:
-            raise ValueError(
-                f"Unknown domain '{domain}'. Known domains: "
-                f"{list(DOMAIN_FIELDS.keys())}. Or pass `fields` explicitly."
-            )
-        fields = DOMAIN_FIELDS[domain]
+    fields = DOMAIN_FIELDS[domain]
 
     if output is None:
         base, _ = os.path.splitext(input_path)

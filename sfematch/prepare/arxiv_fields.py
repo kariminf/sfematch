@@ -79,9 +79,9 @@ DOMAIN_FIELDS = {
     "cs": CS_FIELDS,
     "math": MATH_FIELDS,
     "stat": STAT_FIELDS,
-    "q-bio": QBIO_FIELDS,
-    "q-fin": QFIN_FIELDS,
-    "eess": EESS_FIELDS,
-    "physics": PHYSICS_FIELDS,
+    "bio": QBIO_FIELDS,
+    "fin": QFIN_FIELDS,
+    "eng": EESS_FIELDS,
+    "phys": PHYSICS_FIELDS,
 }
 
