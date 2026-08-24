@@ -60,7 +60,7 @@ python separate_text_labels.py cs_papers_test.tsv
 
 To map the labels from a taxonomy to another use the following script.
 By default, it maps from arXiv CS to both ACM CCS 2012 L1 and a one we defined called CCSF.
-In case, you are dealing with another taxonomy, such as arXiv physics or else, prepare a mapping file similar to that in [./examples/subject/ccsf_mapping.json](); it contains a name used to rename the output file, a list of target taxonomy, a mapping function for each label of the source taxonomy a list of indices of the target taxonomy (starting from 0).
+In case, you are dealing with another taxonomy, such as arXiv physics or else, prepare a mapping file similar to that in [](./examples/subject/ccsf_mapping.json); it contains a name used to rename the output file, a list of target taxonomy, a mapping function for each label of the source taxonomy a list of indices of the target taxonomy (starting from 0).
 
 ```sh
 python exec/map_labels.py cs_papers_train_labels.tsv --map ./examples/subject/ccsf_mapping.json
@@ -89,6 +89,7 @@ Also, compile a file for interests manually (cannot be done automatically since 
 
 
 <!-- TODO OpenAlex -->
+
 
 
 
