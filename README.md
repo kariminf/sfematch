@@ -4,7 +4,7 @@ This is an expert matching project.
 
 ## Workflow
 
-### 1. Data collection
+### 1. Data collection and preparation
 
 The most available data is arXiv.
 So, it is good to use it as a source for training.
@@ -87,17 +87,40 @@ Then manually choose the right IDs and compile a file similar to [./examples/inf
 
 Also, compile a file for interests manually (cannot be done automatically since most websites prohibit scrapping), like this example [./examples/info/experts_interests.txt]()
 
+
+<!-- TODO OpenAlex -->
+
+
+
 ### 2. Representation modeling
+
+In here, we discuss how to create models for both subjects and experts.
 
 #### 2.1. Field taxonomy preparation
 
+In case we need a new taxonomy, we just need to prepare a mapping file and encode the train subjects like we did in data collection and preparation.
+
 #### 2.2. Subject modeling
+
+Using a training dataset and a PLM for text encoding, we can train a multilabel encoder.
+Since we want to train just a multilabel classification head, we first start by generating embeddings and store them on disk. 
+This helps optimize memory (no model and tokenizer) and time (tokenization takes time and repeating it each epock/step is time consumable). 
+First you have to prepare a config file similar to [./examples/subject/generate_embedding.json]().
+
+```sh
+python exec/generate_embeddings.py examples/subject/generate_embedding.json 
+
+```
+
+You can check Kaggle notebook [arxiv-cs-generate-embeddings-2gpus](https://www.kaggle.com/code/kariminf/arxiv-cs-generate-embeddings-2gpus) for a tutorial how embeddings were generated from [cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel) and stored to [cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings). 
 
 #### 2.3. Expert modeling
 
 
 ### 3.Matching
 
-### 3.2. Subjects encoding
+### 3.2. Subject representation
+
+### 3.3. Expert representation
 
 ### 3.1. Expert scoring
