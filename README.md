@@ -74,7 +74,7 @@ The dataset is distributed on Kaggle under CC-BY 4 [https://www.kaggle.com/datas
 
 #### 1.3. Expert data collection
 
-This is the most manual data collection step
+This is the most manual data collection step.
 
 Start by compiling a list of experts in a text file (each in a line: firstname; family name) like in [./examples/info/expert_list.txt]().
 Execute this command to get a file like this [./examples/info/experts_info_choices.json]()

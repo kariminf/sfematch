@@ -22,7 +22,10 @@ REQUEST_TIMEOUT = 20
 
 def web_search(query: str, max_results: int = 10) -> list[dict]:
     with DDGS() as ddgs:
-        results = list(ddgs.text(query, max_results=max_results))
+        try:
+            results = list(ddgs.text(query, max_results=max_results))
+        except:
+            return []
     return [
         {"url": r["href"], "title": r["title"], "snippet": r.get("body", "")}
         for r in results
@@ -40,6 +43,6 @@ def fetch_page(url, delay=None):
             time.sleep(delay)
 
     if resp.status_code != 200:
-        return None, resp.url, f"HTTP {resp.status_code}"
+        return None
 
     return resp

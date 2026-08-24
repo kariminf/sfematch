@@ -1,5 +1,21 @@
 {
     "Yann; LeCun": {
+        "orcid": [
+            {
+                "id": "0000-0002-1992-2684",
+                "name": "Yann LeCun",
+                "affiliation": "Association for Computing Machinery",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0009-0004-0706-6114",
+                "name": "Yann LeCun",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
         "openalex": [
             {
                 "id": "A5001226970",
@@ -37,6 +53,80 @@
                 "interests": []
             }
         ],
+        "google_scholar": [
+            {
+                "id": "WLN3QrAAAAAJ",
+                "name": "Yann LeCun",
+                "affiliation": "Yann LeCun \u00b7 Executive Chairman AMI Labs & Jacob T Schwarz Professor, Courant Institute, New York University \u00b7 Verified email at cs.nyu.edu",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "L4bNmsMAAAAJ",
+                "name": "Joan Bruna",
+                "affiliation": "Yann LeCunExecutive Chairman AMI Labs & Jacob T Schwarz Professor, Courant Institute, New York UniversityVerified email at cs.nyu.edu",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "6KgM0OkAAAAJ",
+                "name": "Richard E. Howard",
+                "affiliation": "Yann LeCunExecutive Chairman AMI Labs & Jacob T Schwarz Professor, Courant Institute, New York UniversityVerified email at cs.nyu.edu",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "ETU-ePAAAAAJ",
+                "name": "Sumit Chopra",
+                "affiliation": "Yann LeCunExecutive Chairman AMI Labs & Jacob T Schwarz Professor, Courant Institute, New York UniversityVerified email at cs.nyu.edu",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "AqYyoCMAAAAJ",
+                "name": "Mark Ibrahim",
+                "affiliation": "Yann LeCunExecutive Chairman AMI Labs & Jacob T Schwarz Professor, Courant Institute, New York UniversityVerified email at cs.nyu.edu",
+                "email": null,
+                "interests": []
+            }
+        ],
+        "researchgate": [
+            {
+                "id": "Yann-Lecun-2",
+                "name": "Yann LECUN",
+                "affiliation": "New York University, New York City",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Satyanarayana-Vusirikala-2",
+                "name": "E cient BackProp Yann LeCun1, Leon Bottou1, Genevieve ...",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "M-Civanlar",
+                "name": "M. CIVANLAR",
+                "affiliation": "Vice Rector",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Martin-Mundt-2",
+                "name": "Martin MUNDT",
+                "affiliation": "Professor (Full)",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Camille-Couprie",
+                "name": "Camille COUPRIE",
+                "affiliation": "New York University, New York City",
+                "email": null,
+                "interests": []
+            }
+        ],
         "dblp": [
             {
                 "id": "l/YannLeCun",
@@ -46,24 +136,102 @@
                 "interests": []
             }
         ],
-        "orcid": [
+        "sciencedirect": [
             {
-                "id": "0000-0002-1992-2684",
-                "name": "Yann LeCun",
-                "affiliation": "Association for Computing Machinery",
-                "email": null,
-                "interests": []
-            },
-            {
-                "id": "0009-0004-0706-6114",
-                "name": "Yann LeCun",
+                "id": "36060775900",
+                "name": "Hui Wang | ScienceDirect",
                 "affiliation": null,
                 "email": null,
                 "interests": []
             }
-        ]
+        ],
+        "ieeexplore": [
+            {
+                "id": "37282875900",
+                "name": "Yann LeCun - IEEE Xplore Author Profile",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "37392423100",
+                "name": "Jose M. Alvarez | IEEE Xplore Author Details",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "37320701100",
+                "name": "Patrick Haffner - IEEE Xplore Author Profile",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "37969561800",
+                "name": "Joan Bruna - IEEE Xplore Author Profile",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "37323338000",
+                "name": "Yoshua Bengio | IEEE Xplore Author Details",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "linkedin": [],
+        "github": [
+            {
+                "id": "ylecun",
+                "name": "ylecun (Yann LeCun) \u00b7 GitHubYannLeCun25 (Yann LeCun) \u00b7 GitHubyann-lecun \u00b7 GitHubylecun (Yann LeCun) / Projects \u00b7 GitHubylecun (Yann LeCun) / Repositories \u00b7 GitHublab/data/mnist/README.md at master \u00b7 google-deepmind/labGitHub - The-Swarm-Corporation/JEPA: A simple open source ...",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "YannLeCun25",
+                "name": "YannLeCun25 (Yann LeCun) \u00b7 GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "yann-lecun",
+                "name": "yann-lecun \u00b7 GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "The-Swarm-Corporation",
+                "name": "GitHub - The-Swarm-Corporation/JEPA: A simple open source ...",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "google-deepmind",
+                "name": "lab/data/mnist/README.md at master \u00b7 google-deepmind/lab",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "website": []
     },
     "Andrew; Tanenbaum": {
+        "orcid": [
+            {
+                "id": "0000-0002-9547-801X",
+                "name": "Andrew Tanenbaum",
+                "affiliation": "Vrije Universiteit Amsterdam",
+                "email": null,
+                "interests": []
+            }
+        ],
         "openalex": [
             {
                 "id": "A5048320589",
@@ -94,6 +262,8 @@
                 "interests": []
             }
         ],
+        "google_scholar": [],
+        "researchgate": [],
         "dblp": [
             {
                 "id": "t/AndrewSTanenbaum",
@@ -103,17 +273,130 @@
                 "interests": []
             }
         ],
-        "orcid": [
+        "sciencedirect": [
             {
-                "id": "0000-0002-9547-801X",
-                "name": "Andrew Tanenbaum",
-                "affiliation": "Vrije Universiteit Amsterdam",
+                "id": "7003338413",
+                "name": "Andrew S. Tanenbaum | ScienceDirect",
+                "affiliation": null,
                 "email": null,
                 "interests": []
             }
-        ]
+        ],
+        "ieeexplore": [],
+        "linkedin": [
+            {
+                "id": "andrew-tanenbaum-113744b",
+                "name": "Andrew Tanenbaum - Wealth Strategist at Wells Fargo Advisors ...Andrew Tanenbaum - MOCEAN",
+                "affiliation": "LinkedInAndrew Tanenbaum - Randstad",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "andrewtanenbaum",
+                "name": "Andrew Tanenbaum - MOCEAN",
+                "affiliation": "LinkedInAndrew Tanenbaum - Randstad",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "andrew-tanenbaum-a142b5",
+                "name": "Andrew Tanenbaum - Randstad",
+                "affiliation": "Professioneel profiel",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "andrew-tanenbaum-82b39a106",
+                "name": "andrew tanenbaum - ninguno en asdf",
+                "affiliation": "LinkedIn",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "andrew-tanenbaum-906a55208",
+                "name": "Andrew Tanenbaum - --",
+                "affiliation": "LinkedInAndrew Tannenbaum - Interventional Radiologist at Mercyhealth ...Andrew Tannebaum - Booking Coordinator at DCV Live",
+                "email": null,
+                "interests": []
+            }
+        ],
+        "github": [
+            {
+                "id": "gsahinpi",
+                "name": "Computer Networks - A Tanenbaum - 5th edition.pdf",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "artur-augustyniak",
+                "name": "Andrew S. Tanenbaum Modern Operating Systems \u00b7 GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "BhaskarAnand-05",
+                "name": "DTU_6th_Sem_Books/Andrew S. Tanenbaum - GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "gersimgren",
+                "name": "Andrew S. Tanenbaum - Computer Networks.pdf - GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Yangzither",
+                "name": "Computer Networks - A Tanenbaum - 5th edition.pdf - GitHub",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "website": []
     },
     "Robert J.; Kauffman": {
+        "orcid": [
+            {
+                "id": "0000-0002-3757-0010",
+                "name": "Robert J Kauffman",
+                "affiliation": "Carnegie Mellon University",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-4659-2043",
+                "name": "Zachary J. Kauffman",
+                "affiliation": "Beth Israel Deaconess Medical Center",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-4046-9108",
+                "name": "Ross Kauffman",
+                "affiliation": "Ohio Northern University",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0002-9020-2815",
+                "name": "J Boone Kauffman",
+                "affiliation": "Illahee Sciences International",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "0000-0003-4564-0362",
+                "name": "Leon Kauffman",
+                "affiliation": "U.S. Geological Survey",
+                "email": null,
+                "interests": []
+            }
+        ],
         "openalex": [
             {
                 "id": "A5082290474",
@@ -151,6 +434,44 @@
                 "interests": []
             }
         ],
+        "google_scholar": [],
+        "researchgate": [
+            {
+                "id": "Robert-Kauffman-2",
+                "name": "Robert KAUFFMAN",
+                "affiliation": "Singapore Management University, Singapore ...",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Robert-Josefek",
+                "name": "Robert JOSEFEK",
+                "affiliation": "Doctor of Philosophy",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Rob-Kauffman",
+                "name": "Rob KAUFFMAN",
+                "affiliation": "Copenhagen Business School, Copenhagen ...",
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Dennis-Ahlburg",
+                "name": "PREDICTING INTERNET FIRM BANKRUPTCIES: - ResearchGate",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            },
+            {
+                "id": "Hamid-Mohtadi",
+                "name": "Analyzing Firm-Level Strategy for Internet-Focused ...",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
         "dblp": [
             {
                 "id": "45/10663",
@@ -160,39 +481,51 @@
                 "interests": []
             }
         ],
-        "orcid": [
+        "sciencedirect": [],
+        "ieeexplore": [
             {
-                "id": "0000-0002-3757-0010",
-                "name": "Robert J Kauffman",
-                "affiliation": "Carnegie Mellon University",
+                "id": "37356053400",
+                "name": "Robert J. Kauffman | IEEE Xplore Author Details",
+                "affiliation": null,
+                "email": null,
+                "interests": []
+            }
+        ],
+        "linkedin": [],
+        "github": [],
+        "website": [
+            {
+                "id": "https://scholar.google.com/citations?user=kFJVSnoAAAAJ&hl=en",
+                "name": "Robert J. Kauffman - Google Scholar",
+                "affiliation": null,
                 "email": null,
                 "interests": []
             },
             {
-                "id": "0000-0002-4659-2043",
-                "name": "Zachary J. Kauffman",
-                "affiliation": "Beth Israel Deaconess Medical Center",
+                "id": "https://research.cbs.dk/en/persons/robert-j-kauffman/",
+                "name": "Robert J. Kauffman - CBS Research PortalRobert J. Kauffman",
+                "affiliation": "Center For Digital StrategiesRobert J. KAUFFMAN",
                 "email": null,
                 "interests": []
             },
             {
-                "id": "0000-0002-4046-9108",
-                "name": "Ross Kauffman",
-                "affiliation": "Ohio Northern University",
+                "id": "https://digitalstrategies.tuck.dartmouth.edu/people/%crb_people_category%/robert-j-kauffman/",
+                "name": "Robert J. Kauffman",
+                "affiliation": "Center For Digital Strategies",
                 "email": null,
                 "interests": []
             },
             {
-                "id": "0000-0002-9020-2815",
-                "name": "J Boone Kauffman",
-                "affiliation": "Illahee Sciences International",
+                "id": "https://faculty.smu.edu.sg/profile/robert-j-kauffman-2351",
+                "name": "Robert J. KAUFFMAN",
+                "affiliation": "SMU Faculty Directory",
                 "email": null,
                 "interests": []
             },
             {
-                "id": "0000-0003-4564-0362",
-                "name": "Leon Kauffman",
-                "affiliation": "U.S. Geological Survey",
+                "id": "https://dl.acm.org/profile/81100470705",
+                "name": "Robert J Kauffman - Home - ACM Digital Library",
+                "affiliation": null,
                 "email": null,
                 "interests": []
             }

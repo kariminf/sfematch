@@ -27,40 +27,65 @@ import json
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from sfematch.collect.openalex import get_ids as get_openalex_ids
-# from sfematch.collect.google_sholar import get_ids as get_gs_ids
+from sfematch.collect.google_sholar import get_ids as get_gs_ids
 from sfematch.collect.dblp import get_ids as get_dblp_ids
 from sfematch.collect.orcid import get_ids as get_orcid_ids
 from sfematch.collect.ieee import get_ids as get_ieee_ids
+from sfematch.collect.sciencedirect import get_ids as get_sd_ids
+from sfematch.collect.researchgate import get_ids as get_rg_ids
+from sfematch.collect.other import get_github_ids, get_linkedin_ids, get_websites
 
 MAX_IDS = 5
 DEF_OUT = "./experts_info_choices.json"
 
+
+def list_to_dict(lst):
+    return [ac.to_dict() for ac in  lst]
+
 def get_info(name: str, max_ids=5):
-    names = name.split(";")
-    name = name.replace(";", " ")
+
     print(f"Processing {name} ...")
-    print("---- OpenAlex")
-    openalex = get_openalex_ids(name, per_page=max_ids)
-    # print("---- Google Scholar")
-    # gs       = get_gs_ids(name, max_results=max_ids)
-    print("---- DBLP")
-    dblp     = get_dblp_ids(name, max_results=max_ids)
-    print("---- IEEE")
-    ieee     = get_ieee_ids(name, max_results=max_ids)
 
-    orcid = []
+    result = {}
+    names = name.split(";")
+
+    print("---- ORCID")
+    result["orcid"] = []
     if len(names) > 1:
-        print("---- ORCID")
-        orcid    = get_orcid_ids(names[0], names[1], max_results=max_ids)
+        result["orcid"] = list_to_dict(get_orcid_ids(names[0], names[1], max_results=max_ids))
+
+    name = name.replace(";", " ")
+    
+    print("---- OpenAlex")
+    result["openalex"] = list_to_dict(get_openalex_ids(name, per_page=max_ids))
+
+    print("---- Google Scholar")
+    result["google_scholar"] = list_to_dict(get_gs_ids(name, max_results=max_ids))
+
+    print("---- ResearchGate")
+    result["researchgate"] = list_to_dict(get_rg_ids(name, max_results=max_ids))
+
+    print("---- DBLP")
+    result["dblp"]     = list_to_dict(get_dblp_ids(name, max_results=max_ids))
+
+    print("---- Science Direct")
+    result["sciencedirect"]     = list_to_dict(get_sd_ids(name, max_results=max_ids))
+
+    print("---- IEEE")
+    result["ieeexplore"]     = list_to_dict(get_ieee_ids(name, max_results=max_ids))
+
+    print("---- LinkedIn")
+    result["linkedin"]     = list_to_dict(get_linkedin_ids(name, max_results=max_ids))
+
+    print("---- Github")
+    result["github"]     = list_to_dict(get_github_ids(name, max_results=max_ids))
+
+    print("---- Website")
+    result["website"]     = list_to_dict(get_websites(name, max_results=max_ids))
+    
 
 
-    return {
-        "openalex": [ac.to_dict() for ac in openalex],
-        # "google_scholar": [ac.to_dict() for ac in gs],
-        "dblp": [ac.to_dict() for ac in  dblp],
-        "ieee": [ac.to_dict() for ac in ieee],
-        "orcid": [ac.to_dict() for ac in orcid],
-    }
+    return result
 
 
 def get_infos(names):
