@@ -139,10 +139,21 @@ First you have to prepare a config file similar to [generate_embedding.json](./e
 
 ```sh
 python exec/generate_embeddings.py examples/subject/generate_embedding.json 
-
 ```
 
 You can check Kaggle notebook [arxiv-cs-generate-embeddings-2gpus](https://www.kaggle.com/code/kariminf/arxiv-cs-generate-embeddings-2gpus) for a tutorial how embeddings were generated from [cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel) and stored to [cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings). 
+
+To train a model, you need to create a training configuration similar to [train_subject_model.json](./examples/subject/train_subject_model.json).
+Then, execute this command:
+```sh
+python exec/train_mlp_head.py examples/subject/train_subject_model.json 
+```
+
+To evaluate the model, ou need to create a test configuration similar to [test_subject_model.json](./examples/subject/test_subject_model.json).
+Then, execute this command:
+```sh
+python exec/test_mlp_head.py examples/subject/test_subject_model.json 
+```
 
 #### 2.3. Expert modeling
 

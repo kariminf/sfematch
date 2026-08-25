@@ -20,6 +20,10 @@
 #
 
 import pandas as pd
+import os
+import numpy as np
+
+ID_COL = "id"
 
 def iter_titles_abstracts(tsv_path, batch_size=2000):
     reader = pd.read_csv(
@@ -37,3 +41,18 @@ def count_rows_safe(tsv_path, chunksize=100_000):
     for chunk in pd.read_csv(tsv_path, sep="\t", usecols=["id"], dtype=str, chunksize=chunksize, quoting=3):
         total += len(chunk)
     return total
+
+
+def load_embeddings(path: str):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"missing embeddings file: {path}")
+    return np.load(path, mmap_mode="r")
+
+def load_multilabel_labels(path: str):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"missing labels file: {path}")
+    df = pd.read_csv(
+        path, sep="\t", quoting=3, dtype=str, keep_default_na=False, na_values=[]
+    )
+    labels = [c for c in df.columns if c != ID_COL]
+    return df, labels

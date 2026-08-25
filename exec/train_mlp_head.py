@@ -24,16 +24,32 @@ import os
 import argparse
 import json
 import torch
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from sfematch.model.plm_encoding import Config, create_emb_fct, run_embedding
+from sfematch.model.multilabel_mlp import TrainConfig, train_multilabel_model, save_model
+from sfematch.model.datasets import load_embeddings, load_multilabel_labels
 
+
+def load_datasets(x_url: str, y_url: str):
+
+    emb = load_embeddings(x_url)
+    y_df, labels = load_multilabel_labels(y_url)
+
+    if emb.shape[0] != len(y_df):
+        raise ValueError(f"embeddings ({emb.shape[0]}) and labels ({len(y_df)}) have different sizes")
+
+    X = np.asarray(emb).astype(np.float32)
+    Y = y_df[labels].to_numpy().astype(int)
+    return X, Y
+    
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate embeddings for a dataset (title+abstract) using a PLM."
+        description="Train an MLP with one hidden layer for classification."
     )
     parser.add_argument("config", help="Path to config file")
     args = parser.parse_args()
@@ -41,15 +57,14 @@ def main():
     with open(args.config, encoding="utf-8") as f:
         config_json = json.load(f)
 
-    config = Config()
+    X, Y = load_datasets(config_json["x_train"], config_json["y_train"])
+
+    config = TrainConfig(model_name=config_json["model_name"])
     config.fill(config_json)
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"using device {device}")
+    model = train_multilabel_model(X, Y, config=config)
 
-    embed_fct = create_emb_fct(config, device)
-
-    run_embedding(config, embed_fct)
+    save_model(model, os.path.join(config_json["out_dir"], f"{config.model_name}.pt"))
 
 
 if __name__ == "__main__":

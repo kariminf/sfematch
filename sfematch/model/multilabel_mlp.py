@@ -27,9 +27,30 @@ import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
+from typing import Sized
+from dataclasses import dataclass, fields, asdict
 
 
-class EmbeddingDataset(Dataset):
+@dataclass
+class TrainConfig:
+    model_name: str
+
+    hidden_dim: int = 256
+    dropout: float = 0.2
+    batch_size: int = 512
+    epochs: int = 30
+    lr: float = 1e-3
+
+    def fill(self, obj: dict):
+        for f in fields(self):
+            if f.name in obj:
+                setattr(self, f.name, obj[f.name])
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+class EmbeddingDataset(Dataset, Sized):
     """Wraps embedding + label arrays (numpy or memmap) for DataLoader use."""
 
     def __init__(self, X, Y):
@@ -64,9 +85,8 @@ class MultilabelMLP(nn.Module):
 
 
 def train_multilabel_model(
-    X_train, Y_train, X_val=None, Y_val=None,
-    hidden_dim=256, dropout=0.2, name="model",
-    batch_size=512, epochs=30, lr=1e-3, device=None,
+    X_train, Y_train, config: TrainConfig,
+    X_val=None, Y_val=None, device=None,
 ):
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Training on device: {device}")
@@ -74,18 +94,18 @@ def train_multilabel_model(
     input_dim = X_train.shape[1]
     n_labels = Y_train.shape[1]
 
-    model = MultilabelMLP(input_dim, n_labels, hidden_dim, dropout).to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    model = MultilabelMLP(input_dim, n_labels, config.hidden_dim, config.dropout).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
     criterion = nn.BCEWithLogitsLoss()
 
     train_loader = DataLoader(EmbeddingDataset(X_train, Y_train),
-                               batch_size=batch_size, shuffle=True)
+                               batch_size=config.batch_size, shuffle=True)
     val_loader = None
     if X_val is not None:
         val_loader = DataLoader(EmbeddingDataset(X_val, Y_val),
-                                 batch_size=batch_size, shuffle=False)
+                                 batch_size=config.batch_size, shuffle=False)
 
-    for epoch in range(1, epochs + 1):
+    for epoch in range(1, config.epochs + 1):
         model.train()
         total_loss = 0.0
         for xb, yb in train_loader:
@@ -98,7 +118,7 @@ def train_multilabel_model(
             total_loss += loss.item() * xb.size(0)
         train_loss = total_loss / len(train_loader.dataset)
 
-        msg = f"{name}: epoch {epoch}/{epochs}  train_loss={train_loss:.4f}"
+        msg = f"{config.model_name}: epoch {epoch}/{config.epochs}  train_loss={train_loss:.4f}"
         if val_loader is not None:
             model.eval()
             val_loss = 0.0

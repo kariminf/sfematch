@@ -1,0 +1,7 @@
+{
+    "model": "./main/models/cs_ccsf_cls_sbert_mlmlp.pt",
+    "x_test": "./main/test_data/sbert_test_emb.npy",
+    "y_test": "./main/test_data/cs_papers_test_ccsf.tsv",
+    "out_report": "./main/results/ccf_sbert_mlp_report.txt",
+    "threshold": 0.5
+}
