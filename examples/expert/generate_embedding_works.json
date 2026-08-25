@@ -1,8 +1,8 @@
 {
     "model_name": "sbert",
-    "tsv_path": "./data/arxiv/cs_papers_train_text.tsv",
-    "out_dir": "./data/arxiv",
-    "out_name": "sbert_train_emb.npy",
+    "tsv_path": "./data/openalex/works.tsv",
+    "out_dir": "./data/openalex",
+    "out_name": "works_sbert_emb.npy",
     "max_length": 512,
     "read_batch_size": 3000,
     "flush_freq" : 5000,

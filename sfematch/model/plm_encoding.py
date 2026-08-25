@@ -34,14 +34,21 @@ import torch
 
 
 def iter_titles_abstracts(tsv_path, batch_size=2000):
+    n_cols = len(pd.read_csv(tsv_path, sep="\t", nrows=0).columns)
     reader = pd.read_csv(
-        tsv_path, sep="\t", usecols=["id", "title", "abstract"],
+        tsv_path, sep="\t", 
         dtype=str, chunksize=batch_size, keep_default_na=False, quoting=3
     )
-    for chunk in reader:
-        titles = chunk["title"].fillna("").str.strip().tolist()
-        abstracts = chunk["abstract"].fillna("").str.strip().tolist()
-        yield titles, abstracts
+
+    if n_cols == 2:
+        for chunk in reader:
+            titles = chunk["keyword"].fillna("").str.strip().tolist()
+            yield titles, [None] * len(titles)
+    else:
+        for chunk in reader:
+            titles = chunk["title"].fillna("").str.strip().tolist()
+            abstracts = chunk["abstract"].fillna("").str.strip().tolist()
+            yield titles, abstracts
 
 
 def count_rows_safe(tsv_path, chunksize=100_000):
@@ -179,6 +186,8 @@ def create_emb_fct(config: Config, device: str = "cpu"):
     
 
 def join_title_abstract(title, abstract, join_str = ". "):
+    if abstract is None:
+        return title
     return title + join_str + abstract
 
 def checkpoint_path(out_path):

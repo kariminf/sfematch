@@ -1,0 +1,11 @@
+{
+    "model_name": "sbert",
+    "tsv_path": "./data/profile/interests.tsv",
+    "out_dir": "./data/profile",
+    "out_name": "interests_sbert_emb.npy",
+    "max_length": 16,
+    "read_batch_size": 3000,
+    "flush_freq" : 5000,
+    "fp16": false,
+    "resume": false
+}

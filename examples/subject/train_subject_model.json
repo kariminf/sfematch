@@ -1,8 +1,8 @@
 {
     "model_name": "cs_ccsf_cls_sbert_mlmlp",
-    "x_train": "./main/train_data/sbert_train_emb.npy",
-    "y_train": "./main/train_data/cs_papers_train_ccsf.tsv",
-    "out_dir": "./main/models",
+    "x_train": "./data/arxiv/train_data/sbert_train_emb.npy",
+    "y_train": "./data/arxiv/train_data/cs_papers_train_ccsf.tsv",
+    "out_dir": "./data/models",
     "hidden_dim": 256,
     "dropout": 0.2,
     "batch_size" : 512,

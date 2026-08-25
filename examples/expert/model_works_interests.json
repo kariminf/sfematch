@@ -1,0 +1,14 @@
+{
+    "output": "./data/profile",
+    "name": "arxiv_sbert",
+
+    "model": "./data/model/cs_arxiv_cls_sbert_mlmlp.pt",
+
+    "interests_json": "./data/profile/experts_interests.json",
+    "interests_tsv": "./data/profile/interests.tsv",
+    "interests_npy": "./interests_sbert_emb.npy",
+
+    "works_json": "./data/profile/experts_works.json",
+    "works_tsv": "./data/openalex/works.tsv",
+    "works_npy": "./data/openalex/works_sbert_emb.npy"
+}
