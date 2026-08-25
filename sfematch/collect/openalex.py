@@ -35,6 +35,7 @@ if you want that.
 import json
 from dataclasses import dataclass, field, asdict
 from typing import Optional, Union, List
+from pathlib import Path
 
 import requests
 from . import Work, AuthorCandidate
@@ -92,21 +93,7 @@ def get_ids(name: str, per_page: int = 5) -> List[AuthorCandidate]:
     ]
 
 def get_works(author_id: str, url: Optional[str] = None, per_page: int = 100) -> List[Work]:
-    """
-    Fetch all works for a given OpenAlex author id (paginates automatically
-    via cursor paging, so you get everything, not just the first page).
 
-    If `url` is given, the raw list of works is also saved there as JSON.
-
-    Args:
-        author_id: OpenAlex author id, e.g. "A5023888391" or the full
-            "https://openalex.org/A5023888391" URL
-        url: optional file path to also dump the raw OpenAlex work JSON to
-        per_page: page size for the underlying paginated requests
-
-    Returns:
-        List of Work.
-    """
     author_filter = _short_id(author_id)
 
     raw_works: list[dict] = []
@@ -132,42 +119,7 @@ def get_works(author_id: str, url: Optional[str] = None, per_page: int = 100) ->
         with open(url, "w", encoding="utf-8") as f:
             json.dump(raw_works, f, ensure_ascii=False, indent=2)
 
-    works: List[Work] = []
-    for w in raw_works:
-        title = w.get("display_name") or w.get("title")
-
-        abstract = construct_abstract(w.get("abstract_inverted_index"))
-
-        primary_location = w.get("primary_location") or {}
-        link = primary_location.get("landing_page_url") or w.get("id")
-
-        authors = [
-            (a.get("author") or {}).get("display_name")
-            for a in w.get("authorships", [])
-        ]
-        authors = [a for a in authors if a]
-
-        source = primary_location.get("source") or {}
-        venue = source.get("display_name")
-        year = w.get("publication_year")
-        if venue and year:
-            venue = f"{venue} {year}"
-        elif not venue and year:
-            venue = str(year)
-
-        works.append(
-            Work(
-                id=_short_id(w.get("id", "")),
-                title=title,
-                year=year,
-                abstract=abstract,
-                link=link,
-                authors=authors,
-                keywords=[],  # see note below
-                language=w.get("language"),
-                venue=venue,
-            )
-        )
+    works = extract_works(raw_works)
 
     return works
 
@@ -230,10 +182,13 @@ def extract_works(works_data: Union[list[dict], dict]) -> list[Work]:
         else:
             keywords = [c.get("display_name") for c in w.get("concepts", []) if c.get("display_name")]
 
+        
+
         works.append(
             Work(
-                id=w.get("id"),
+                id=_short_id(w.get("id")),
                 title=w.get("title"),
+                year = w.get("publication_year"),
                 abstract=construct_abstract(w.get("abstract_inverted_index")),
                 link=_primary_link(w),
                 authors=authors,
@@ -243,3 +198,51 @@ def extract_works(works_data: Union[list[dict], dict]) -> list[Work]:
         )
 
     return works
+
+
+def format_index(index: dict[str, list[dict]]) -> str:
+    """
+    Pretty-print the index, but keep each {"id":..,"pos":..,"nbr":..}
+    entry on a single line instead of one line per key.
+    """
+    lines = ["{"]
+    items = list(index.items())
+
+    for i, (name, works) in enumerate(items):
+        lines.append(f"  {json.dumps(name, ensure_ascii=False)}: [")
+        for j, w in enumerate(works):
+            comma = "," if j < len(works) - 1 else ""
+            lines.append(f"    {json.dumps(w, ensure_ascii=False)}{comma}")
+        comma = "," if i < len(items) - 1 else ""
+        lines.append(f"  ]{comma}")
+
+    lines.append("}")
+    return "\n".join(lines)
+
+
+def index_authors(works_path, out_file):
+    index: dict[str, list[dict]] = {}
+
+    for pub_file in Path(works_path).glob("*.json"):
+        with open(pub_file, encoding="utf-8") as f:
+            work = json.load(f)
+
+        authors = work.get("authors", [])
+        if not authors:
+            continue
+
+        work_id = _short_id(work.get("id", pub_file.stem))
+        nbr = len(authors)
+
+        for pos, name in enumerate(authors, start=1):
+            index.setdefault(name, []).append({
+                "id": work_id,
+                "pos": pos,
+                "nbr": nbr,
+            })
+
+    with open(out_file, "w", encoding="utf-8") as f:
+        f.write(format_index(index))
+
+    print(f"Indexed {len(index)} authors across {sum(len(v) for v in index.values())} authorships")
+    print(f"Saved to {out_file}")
