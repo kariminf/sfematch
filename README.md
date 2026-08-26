@@ -1,4 +1,7 @@
-# sfematch: Subject-Field-Expert matching
+# SFE-Match: Subject-Field-Expert matching
+
+[![Project](https://img.shields.io/badge/Project-SFEMatch-0BDA51.svg?style=plastic)](https://kariminf.github.io/sfematch/)
+[![License](https://img.shields.io/badge/License-Apache_2-0BDA51.svg?style=plastic)](http://www.apache.org/licenses/LICENSE-2.0)
 
 This is an expert matching project.
 
@@ -169,13 +172,15 @@ python exec/generate_embeddings.py examples/expert/generate_embedding_works.json
 python exec/generate_embeddings.py examples/expert/generate_embedding_interests.json 
 ```
 
-TODO
-to model works and interests
+To model works and interests, use this script.  
+It will generate probabilities for works and interests and store them into a folder.
+
 ```sh
-python model_works_interests.py examples/expert/model_works_interests
+python exec/model_works_interests.py examples/expert/model_works_interests.json
 ```
 
 
+<!-- TODO continue here -->
 to create experts profiles 
 
 ### 3.Matching
@@ -185,3 +190,33 @@ to create experts profiles
 ### 3.3. Expert representation
 
 ### 3.1. Expert scoring
+
+
+## Research and Reproducibility
+
+This project was 
+
+The preprocessing pipeline is designed to separate:
+- source data, such as arXiv and OpenAlex;
+- taxonomy mappings;
+- expert metadata and interests;
+- processed textual datasets;
+- precomputed PLM embeddings.
+
+This separation makes it possible to reproduce individual stages of the pipeline without repeating the entire data collection process. 
+
+## License
+
+Copyright (C) 2026 Abdelkrime Aries
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

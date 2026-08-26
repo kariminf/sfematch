@@ -56,3 +56,11 @@ def load_multilabel_labels(path: str):
     )
     labels = [c for c in df.columns if c != ID_COL]
     return df, labels
+
+def load_tsv(path: str):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"missing labels file: {path}")
+    df = pd.read_csv(
+        path, sep="\t", quoting=3, dtype=str, keep_default_na=False, na_values=[]
+    )
+    return df

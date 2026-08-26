@@ -1,14 +1,12 @@
 {
-    "output": "./data/profile",
-    "name": "arxiv_sbert",
+    "output": "./data/expert_model",
+    "name": "ccsf_sbert",
 
-    "model": "./data/model/cs_arxiv_cls_sbert_mlmlp.pt",
+    "model": "./data/models/cs_ccsf_cls_sbert_mlmlp.pt",
 
-    "interests_json": "./data/profile/experts_interests.json",
     "interests_tsv": "./data/profile/interests.tsv",
-    "interests_npy": "./interests_sbert_emb.npy",
+    "interests_emb": "./data/profile/interests_sbert_emb.npy",
 
-    "works_json": "./data/profile/experts_works.json",
     "works_tsv": "./data/openalex/works.tsv",
-    "works_npy": "./data/openalex/works_sbert_emb.npy"
+    "works_emb": "./data/openalex/works_sbert_emb.npy"
 }

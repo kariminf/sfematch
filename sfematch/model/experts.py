@@ -41,15 +41,15 @@ def pool_expert_vector(item_ids, id_to_index, probs, pool):
     raise ValueError(f"unknown pool: {pool}")
 
 
-def build_expert_models(expert_item_ids, id_to_index, tax_probs, pool):
+def build_expert_models(expert_item_ids, id_to_index, name_probs, pool):
     """For every taxonomy, pools each expert's items into one vector.
     Returns {tax: {expert_id: vector}} (experts with nothing found are omitted)."""
     models = {}
-    for tax, probs in tax_probs.items():
+    for name, probs in name_probs.items():
         expert_vecs = {}
         for expert, item_ids in expert_item_ids.items():
             vec = pool_expert_vector(item_ids, id_to_index, probs, pool)
             if vec is not None:
                 expert_vecs[expert] = vec
-        models[tax] = expert_vecs
+        models[name] = expert_vecs
     return models

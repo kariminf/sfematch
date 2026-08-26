@@ -53,36 +53,38 @@ FinalModels/experts/
 
 import argparse
 import json
+import os
+import sys
 from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-ALPHAS = [0.0, 0.25, 0.5, 0.75, 1.0]
+from sfematch.model.datasets import load_embeddings, load_tsv
+from sfematch.model.experts import pool_expert_vector, build_expert_models
 
 
 # --------------------------------------------------------------------------
 # Loading helpers
 # --------------------------------------------------------------------------
-def load_probs_dir(dir_path: Path):
-    """Loads ids.npy + {tax}_probs.npy from a model_works_interests.py output dir.
-    Returns (id_to_index: dict[str, int], tax_probs: {tax: (n, n_labels) array})."""
-    ids_path = dir_path / "ids.npy"
-    if not ids_path.exists():
-        raise FileNotFoundError(
-            f"missing {ids_path}; run model_works_interests.py first"
-        )
-    ids = np.load(ids_path, allow_pickle=True)
+def load_probs_dir(dir_path: Path, t=None):
+
+    name_probs = {}
+    name = ""
+
+    suff = f"_{t}_probs.npy" if t else "_probs.npy"
+
+    for probs_file in dir_path.glob(f"*{suff}"):
+        name = probs_file.name.removesuffix(f"{suff}")
+        name_probs[name] = np.load(probs_file)
+
+    # just one id suffice (all are similar so take the last name)
+    id_f = f"{name}_{t}_ids.npy" if t else f"{name}_ids.npy"
+    ids = np.load(dir_path / id_f, allow_pickle=True)
     id_to_index = {str(v): i for i, v in enumerate(ids)}
 
-    tax_probs = {}
-    for tax in TAXONOMIES:
-        p = dir_path / f"{tax}_probs.npy"
-        if p.exists():
-            tax_probs[tax] = np.load(p)
-        else:
-            print(f"  [warn] {p} not found -- taxonomy '{tax}' unavailable for {dir_path}")
-    return id_to_index, tax_probs
+    return id_to_index, name_probs
 
 
 def load_expert_interests(json_path: Path):
@@ -98,7 +100,9 @@ def load_expert_works(json_path: Path):
         data = json.load(f)
     return {expert: [item["id"] for item in items] for expert, items in data.items()}
 
-
+# --------------------------------------------------------------------------
+# Main
+# --------------------------------------------------------------------------
 
 
 # --------------------------------------------------------------------------
@@ -117,12 +121,12 @@ def main():
         config_json = json.load(f)
 
     print("loading pooled classifier outputs (interests, works)...")
-    interest_id_to_index, interest_tax_probs = load_probs_dir(args.interests_dir)
-    work_id_to_index, work_tax_probs = load_probs_dir(args.works_dir)
+    interest_id_to_index, interest_name_probs = load_probs_dir(Path(config_json["interests_dir"]), t="interests")
+    work_id_to_index, work_name_probs = load_probs_dir(Path(config_json["works_dir"]), t="works")
 
     print("loading expert -> interests / works mappings...")
-    expert_interest_ids = load_expert_interests(args.interests_json)
-    expert_work_ids = load_expert_works(args.works_json)
+    expert_interest_ids = load_expert_interests(config_json["interests_json"])
+    expert_work_ids = load_expert_works(config_json["works_json"])
 
     # "files are joined": union of experts seen in either mapping
     all_experts = sorted(set(expert_interest_ids) | set(expert_work_ids))
@@ -131,36 +135,37 @@ def main():
         expert_interest_ids.setdefault(e, [])
         expert_work_ids.setdefault(e, [])
 
-    args.out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(config_json["experts_dir"])
+    os.makedirs(out_dir, exist_ok=True)
 
-    for pool in POOLS:
+    for pool in config_json["pool"]:
         print(f"\n=== pool = {pool} ===")
         interest_models = build_expert_models(
-            expert_interest_ids, interest_id_to_index, interest_tax_probs, pool
+            expert_interest_ids, interest_id_to_index, interest_name_probs, pool
         )
         work_models = build_expert_models(
-            expert_work_ids, work_id_to_index, work_tax_probs, pool
+            expert_work_ids, work_id_to_index, work_name_probs, pool
         )
 
-        for tax in TAXONOMIES:
-            if tax not in interest_models or tax not in work_models:
-                print(f"  [skip] taxonomy '{tax}' unavailable for pool '{pool}'")
+        for name in interest_models:
+            if name not in work_models:
+                print(f"  [skip] '{name}' unavailable for pool '{pool}'")
                 continue
 
-            i_vecs = interest_models[tax]
-            w_vecs = work_models[tax]
+            i_vecs = interest_models[name]
+            w_vecs = work_models[name]
 
             # only experts that have BOTH an interest model and a work model
             common_experts = sorted(set(i_vecs) & set(w_vecs))
             missing = sorted(set(all_experts) - set(common_experts))
             if missing:
                 shown = missing[:5]
-                print(f"  [warn] tax={tax}: {len(missing)} expert(s) skipped "
+                print(f"  [warn] tax={name}: {len(missing)} expert(s) skipped "
                       f"(missing interest and/or work model): {shown}"
                       f"{' ...' if len(missing) > 5 else ''}")
 
             if not common_experts:
-                print(f"  [skip] tax={tax}: no experts with both models")
+                print(f"  [skip] tax={name}: no experts with both models")
                 continue
 
             I = np.stack([i_vecs[e] for e in common_experts], axis=0)
@@ -168,16 +173,16 @@ def main():
 
             # expert-id ordering for this (pool, tax) combo, so rows can be
             # mapped back for every alpha value saved below
-            ids_path = args.out_dir / f"ids_{pool}_sbert_{tax}.npy"
+            ids_path = out_dir / f"ids_{pool}_{name}.npy"
             np.save(ids_path, np.array(common_experts, dtype=object))
 
-            for alpha in ALPHAS:
+            for alpha in config_json["alpha"]:
                 mixed = alpha * W + (1.0 - alpha) * I
-                out_path = args.out_dir / f"mixed_{pool}_a{alpha}_sbert_{tax}.npy"
+                out_path = out_dir / f"mixed_{pool}_a{alpha}_{name}.npy"
                 np.save(out_path, mixed.astype(np.float32))
                 print(f"  saved {out_path.name}  shape={mixed.shape}")
 
-    print(f"\ndone. outputs in {args.out_dir}")
+    print(f"\ndone. outputs in {out_dir}")
 
 
 if __name__ == "__main__":
