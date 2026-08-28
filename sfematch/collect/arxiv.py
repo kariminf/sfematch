@@ -19,15 +19,16 @@
 # limitations under the License.
 #
 
+
 import json
 import os
 import sys
-
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field, asdict
+
 from typing import Optional, List
+
 from . import Work
 
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
@@ -95,7 +96,7 @@ def get_works(name: str, max_results: int = 50) -> List[Work]:
             Work(
                 id=short_id,
                 title=title,
-                year=None,
+                year=year,
                 abstract=abstract,
                 link=link,
                 authors=authors,

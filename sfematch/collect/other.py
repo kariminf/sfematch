@@ -22,9 +22,10 @@
 # No API
 
 import re
-from typing import List, Dict, Optional
 
-from . import Work, AuthorCandidate
+from typing import List
+
+from . import AuthorCandidate
 from .tools import fetch_page, web_search
 
 

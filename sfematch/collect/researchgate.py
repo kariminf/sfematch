@@ -22,10 +22,11 @@
 # No API
 
 import re
-from typing import List, Dict, Optional
 
-from . import Work, AuthorCandidate
-from .tools import fetch_page, web_search
+from typing import List
+
+from . import AuthorCandidate
+from .tools import web_search
 
 RESEARCHGATE_PROFILE = "researchgate.net/profile"
 

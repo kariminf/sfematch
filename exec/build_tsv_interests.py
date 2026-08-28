@@ -20,12 +20,12 @@
 # limitations under the License.
 #
 
-import re
+
 import argparse
-from pathlib import Path
 import json
+import re
 
-
+from pathlib import Path
 
 EXPERT_ID_RE = re.compile(r'^XPRT\d+$', re.IGNORECASE)
 

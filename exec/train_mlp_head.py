@@ -19,18 +19,17 @@
 # limitations under the License.
 #
 
-import sys
-import os
 import argparse
 import json
-import torch
 import numpy as np
+import os
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sfematch.model.plm_encoding import Config, create_emb_fct, run_embedding
-from sfematch.model.multilabel_mlp import TrainConfig, train_multilabel_model, save_model
 from sfematch.model.datasets import load_embeddings, load_multilabel_labels
+from sfematch.model.multilabel_mlp import TrainConfig, train_multilabel_model, save_model
+
 
 
 def load_datasets(x_url: str, y_url: str):

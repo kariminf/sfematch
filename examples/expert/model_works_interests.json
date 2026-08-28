@@ -1,6 +1,6 @@
 {
     "output": "./data/expert_model",
-    "name": "ccsf_sbert",
+    "name": "sbert_ccsf",
 
     "model": "./data/models/cs_ccsf_cls_sbert_mlmlp.pt",
 

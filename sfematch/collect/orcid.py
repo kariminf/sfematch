@@ -19,8 +19,9 @@
 # limitations under the License.
 #
 
-import requests
 import json
+import requests
+
 from typing import List, Optional
 
 from . import Work, AuthorCandidate

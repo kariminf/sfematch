@@ -20,21 +20,21 @@
 # limitations under the License.
 #
 
-import sys
-import os
+
 import argparse
 import json
-import time
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from sfematch.collect.openalex import index_authors
-
-import json
+import os
 import re
-from pathlib import Path
-from langdetect import detect_langs
+import sys
+
 from deep_translator import GoogleTranslator
+from langdetect import detect_langs
+from pathlib import Path
+
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# from sfematch.collect.openalex import index_authors
+
 
 # OPENALEX_DIR = Path("./OpenAlex/Works")
 # OWORKS_DIR = Path("./OtherWorks")

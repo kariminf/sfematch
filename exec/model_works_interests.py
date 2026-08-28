@@ -21,18 +21,17 @@
 
 
 import argparse
-import csv
-import sys
-import os
 import json
-from pathlib import Path
-
 import numpy as np
+import os
+import sys
 import torch
+
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sfematch.model.datasets import load_embeddings, load_tsv
+from sfematch.model.datasets       import load_embeddings, load_tsv
 from sfematch.model.multilabel_mlp import load_model, predict_proba
 
 

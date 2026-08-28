@@ -1,0 +1,21 @@
+{
+
+    "name": "sbert_ccsf_max_a0.5_cosine",
+    "out_path": "./kaggle_tuto",
+    "s_paths": [
+        "./kaggle/labels/fyp/fyp2025_arxiv.tsv",
+        "./kaggle/labels/fyp/fyp2025_ccs2012l1.tsv",
+        "./kaggle/labels/fyp/fyp2025_ccsf.tsv"
+    ],
+    "e_paths": [
+        "./kaggle/labels/experts/experts_arxiv.tsv",
+        "./kaggle/labels/experts/experts_ccs2012l1.tsv",
+        "./kaggle/labels/experts/experts_ccsf.tsv"
+    ],
+
+    "gold_path": "./kaggle/labels/fyp/fyp2025_jury.tsv",
+    "match_path": "./kaggle_tuto/match_max_a0.5_sbert_ccsf_cosine30.json",
+
+    "gold_size": [3, 10, 20],
+    "top_k": [3, 6, 10]
+}

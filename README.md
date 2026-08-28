@@ -9,201 +9,398 @@ This is an expert matching project.
 
 ### 1. Data collection and preparation
 
-The most available data is arXiv.
-So, it is good to use it as a source for training.
-
 #### 1.1. Taxonomy collection
 
-Arxiv taxonomies already exist in this project: cs, math, stat, bio, fin, phys.
+<!-- Arxiv taxonomies already exist in this project: cs, math, stat, bio, fin, phys.
 Othor antologies can be afforded if you afford mappings from the original you used.
-The following sections will discuss this.
+The following sections will discuss this. -->
+SFE-Match uses a predefined research taxonomy as the representation space.
+The repository currently includes arXiv taxonomies for:
+- cs — Computer Science
+- math — Mathematics
+- stat — Statistics
+- bio — Quantitative Biology
+- fin — Quantitative Finance
+- phys — Physics
+
+Other taxonomies can also be used. A mapping between the source taxonomy and the target taxonomy must be provided when necessary.
+Examples of taxonomy mappings are available in: [examples/subject/](./examples/subject/ccsf_mapping.json).
+For the experiments reported in the paper, three taxonomies are used:
+- arXiv
+- ACM Computing Classification System (CCS) 2012 Level 1
+- CCSF, a compact taxonomy defined for this study
 
 #### 1.2. Scientific publication collection
 
 ArXiv dataset can be freely downloaded from [Kaggle:arXiv](https://www.kaggle.com/datasets/Cornell-University/arxiv).
-Then, to extract just a subset of papers using a taxonomy:
+
+Scientific publications are used to train the subject representation model.
+[arXiv](https://arxiv.org/) provides a large, openly available collection of scientific publications and is therefore used as the primary source for training data.
+The arXiv metadata dataset can be obtained from: [Kaggle: arXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv).
+
+
+**Extract papers from an arXiv domain**
+
+To extract papers belonging to a specific arXiv domain:
 
 ```sh
 python exec/extract_arxiv_domain.py --src data/arxiv/arxiv-metadata-oai-snapshot.json --out data/arxiv/cs_papers.jsonl --dom cs 
 ```
 
-Replace "cs" with "math", "stat", "bio", "fin", "eng", or "phys".
-It will generate a file "cs_papers.jsonl".
-Then transform this file into a tsv file "cs_papers.tsv" using this script:
+Replace cs with the desired domain, such as: `math`, `stat`, `bio`, `fin` or `phys`.
+The command generates a JSONL file such as: `cs_papers.jsonl`.
+
+**Convert JSONL to TSV**
+
+Convert the extracted dataset to TSV format:
 
 ```sh
 python exec/jsonl2tsv.py --src data/arxiv/cs_papers.jsonl --dom cs
 ```
 
-Split the dataset into train/test with a balanced percentage of labels.
-Given a file "cs_papers.tsv", this will generate "cs_papers_train.tsv" and "cs_papers_test.tsv".
-Also it will print a pretty table with statistics on fields distribution. 
+This generates: `cs_papers.tsv`.
+
+**Create train/test splits**
+
+The dataset can be divided into training and test sets while maintaining a balanced distribution of labels:
 
 ```sh
-python exec/train_test_split.py data/arxiv/cs_papers.tsv  --test-size 0.2
+python exec/split_train_test.py data/arxiv/cs_papers.tsv  --test-size 0.2
 ```
 
-To separate the text from labels, use the following script.
-In this case, the file "cs_papers_train.tsv" will be separated into "cs_papers_train_text.tsv" and "cs_papers_train_labels.tsv".
+This generates: `cs_papers_train.tsv` and `cs_papers_test.tsv`.
+The script also reports statistics on the distribution of fields.
 
+-------
+**Separate text and labels**
+
+To separate publication text from taxonomy labels:
 ```sh
 python separate_text_labels.py data/arxiv/cs_papers_train.tsv
 python separate_text_labels.py data/arxiv/cs_papers_test.tsv
 ```
 
-To map the labels from a taxonomy to another use the following script.
-By default, it maps from arXiv CS to both ACM CCS 2012 L1 and a one we defined called CCSF.
-In case, you are dealing with another taxonomy, such as arXiv physics or else, prepare a mapping file similar to that in [ccsf_mapping.json](./examples/subject/ccsf_mapping.json); it contains a name used to rename the output file, a list of target taxonomy, a mapping function for each label of the source taxonomy a list of indices of the target taxonomy (starting from 0).
+For example: the file `cs_papers_train.tsv` will be separated into `cs_papers_train_text.tsv` and `cs_papers_train_labels.tsv`.
+
+**Map labels between taxonomies**
+
+Labels can be mapped from one taxonomy to another using:
 
 ```sh
 python exec/map_labels.py data/arxiv/cs_papers_train_labels.tsv --map ./examples/subject/ccsf_mapping.json
 ```
 
-For arXiv computer science papers:
-- We created a dataset for three taxonomies arXiv, ACM CCS 2012 L1 and our CCSF.
-The dataset is distributed on Kaggle under CC-BY 4 [cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel)
-- Also, to save time for researchers, we created another dataset containing only embeddings of the title+abstract using many PLMs: BERT, Sentence-BERT, SciBERT, and SPECTER2. It is distributed under CC-BY 4 [cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings).
+For another source taxonomy, create a mapping file following the structure of: [examples/subject/ccsf_mapping.json](./examples/subject/ccsf_mapping.json)
+A mapping file specifies:
+- the name used for the output;
+- the target taxonomy;
+- the mapping associated with each source label; the indices of the corresponding target labels.
 
+**Preprocessed arXiv datasets**
+
+- *cs-papers-arxiv-multilabel*: 
+To facilitate reproduction, preprocessed datasets for arXiv Computer Science papers are provided.
+This dataset contains papers annotated according to: arXiv, ACM CCS 2012 Level 1, and CCSF.
+The dataset is distributed on Kaggle under CC BY 4.0: [Kaggle:cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel)
+
+- *cs-papers-arxiv-embeddings*: 
+We also provide precomputed embeddings of publication titles and abstracts generated using several PLMs, including: BERT, Sentence-BERT, SciBERT, and SPECTER2.
+Providing embeddings avoids repeating the computationally expensive PLM encoding step.
+The dataset is distributed on Kaggle: [Kaggle:cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings)
 
 #### 1.3. Expert data collection
 
-This is the most manual data collection step.
+Expert data collection is the most manual component of the pipeline.
 
-Start by compiling a list of experts in a text file (each in a line: firstname; family name) like in [expert_list.txt](./examples/info/expert_list.txt).
-Execute this command to get a file like this [experts_info_choices.json](./examples/info/experts_info_choices.json)
+**Create an expert list**
+
+Create a text file containing one expert per line:
+An example is provided in: [expert_list.txt](./examples/info/expert_list.txt).
+
+Run:
 
 ```sh
 python exec/collect_infos.py examples/info/expert_list.txt  --out examples/info/experts_info_choices.json
 ```
 
-Then manually choose the right IDs and compile a file similar to [experts_info.json](./examples/info/experts_info.json).
+The script generates candidate identifiers and information for each expert: [experts_info_choices.json](./examples/info/experts_info_choices.json)
+The correct identifiers must then be selected manually and stored in a file following the structure of: [experts_info.json](./examples/info/experts_info.json).
 
-Also, compile a file for interests manually (cannot be done automatically since most websites prohibit scrapping), like this example [experts_interests.txt](./examples/info/experts_interests.txt)
+**Collect research interests**
 
-<!-- OpenAlex -->
-**Work processing**
+Research interests are collected separately because many websites do not permit automated scraping.
+Prepare a file following the structure of: [experts_interests.txt](./examples/info/experts_interests.txt).
 
-OpenAlex is a good source for expert works since it affords an API with a daily quota.
-This script downloads openalex files for each author to a folder.
-If the script is interepted, it can skip the ones already having a file downloaded.
-In this example, our output is a folder called "data/openalex".
-This script, will create a folder called "data/openalex/profiles" to save each expert's openalex profile.
-Then, it extracts individual works to a folder "data/openalex/works". 
+#### 1.4. Expert publication processing
+
+**Collect publications from OpenAlex**
+
+[OpenAlex](https://openalex.org/) is used as the primary source for expert publications because it provides an API for retrieving scholarly metadata.
+
+Run:
+
 ```sh
 python exec/collect_works.py examples/info/experts_info.json --out data/openalex
 ```
 
-To extract abstract issues use the following script; we specified the main folder as "openalex" and it should contain a folder "openalex/works".
-This script will create a file "abstract_issues_report.json" containing works without abstracts and also redundant works (probably the same work).
-Then you can manually process them.
+The script downloads expert profiles from OpenAlex and store them under `data/openalex/profiles/`.
+Then, it extracts individual works and store them under `data/openalex/works/`.
+If execution is interrupted, already downloaded files can be retained and skipped during subsequent execution.
+
+**Check publication records**
+
+Use the following script to identify works with missing abstracts and potentially redundant records:
+
 ```sh
 python exec/find_abstract_issues.py data/openalex
 ```
 
-Then, you can index expert works using the script.
-These works are processed to extract each author and its works list into "data/openalex/indexed_works.json".
-Finaly, you have to manually copy the works from "data/openalex/indexed_works.json" to "data/profile/expert_works.json".
-It is done manually because authors names are not always standard (in the indexed works you can find the same author with many entries)
+This generates: a file `data/openalex/abstract_issues_report.json` containing works without abstracts and also redundant works (probably the same work).
+
+The reported issues can then be inspected and corrected manually.
+
+**Index expert works**
+
+To index works by author:
+
 ```sh
 python exec/index_expert_works.py data/openalex
 ```
 
-Finally to transform the works to a tsv (tabular data) while anonymizing their IDs.
-You have to specidy the main folder containing works folder "works" and "expert_works.json".
-This will create 3 files: "expert_works_anonym.json" with the new works IDs, "works_id_mapping.json" (a mapping from new IDs to OpenAlex IDs), and works.tsv (id \t title \t abstract).
-You can specify the languages to translate from if detected in the title and/or the abstract.
-If not specified, no translation.
+This generates: `data/openalex/indexed_works.json` containing author–work associations.
+Because author names are not always represented consistently across sources, the resulting author–work associations must be manually verified.
+
+The verified associations should then be stored in: `data/profile/expert_works.json`.
+
+**Build the works dataset**
+
+The verified expert–work associations can be converted into a TSV dataset while replacing the original work identifiers with anonymized identifiers:
+
 ```sh
 python exec/build_tsv_works.py data/openalex --t fr,ar
 ```
 
-**Interest processing**
+The script generates three files: `expert_works_anonym.json`, `works_id_mapping.json` and `works.tsv`.
+The files contain:
+- expert_works_anonym.json — anonymized work identifiers associated with experts;
+- works_id_mapping.json — mapping between anonymized identifiers and OpenAlex identifiers;
+- works.tsv — tabular work data, with columns: `id`, `title` and `abstract`.
 
-To extract the interests into a tsv file.
-It will create "data/profile/interests.tsv" (id \t keywords) and experts_interests.json (each expert and its keywords IDs).
+The --t option specifies languages to translate when detected in the title or abstract.
+For example: `--t fr,ar` requests translation of French and Arabic text.
+If --t is omitted, no translation is performed.
+
+#### 1.5 Expert interest processing
+
+Expert research interests can be converted to TSV format using:
+
 ```sh
 python exec/build_tsv_interests.py data/profile --int examples/info/experts_interests.txt 
 ```
 
+This generates: `data/profile/interests.tsv` and `experts_interests.json`.
+`interests.tsv` contains a table with columns: `id` and `keywords`, while `experts_interests.json` associates each expert with the corresponding interest identifiers.
+
 ### 2. Representation modeling
 
-In here, we discuss how to create models for both subjects and experts.
+The second stage generates field representations for subjects and experts.
 
 #### 2.1. Field taxonomy preparation
 
-In case we need a new taxonomy, we just need to prepare a mapping file and encode the train subjects like we did in data collection and preparation.
+If a new taxonomy is required, prepare the corresponding taxonomy mapping and encode the training subjects using the procedure described in Section 1.2.
 
 #### 2.2. Subject modeling
 
-Using a training dataset and a PLM for text encoding, we can train a multilabel encoder.
-Since we want to train just a multilabel classification head, we first start by generating embeddings and store them on disk. 
-This helps optimize memory (no model and tokenizer) and time (tokenization takes time and repeating it each epock/step is time consumable). 
-First you have to prepare a config file similar to [generate_embedding.json](./examples/subject/generate_embedding.json).
+A subject is represented using a PLM followed by a multi-label prediction head.
+
+To reduce computational and storage requirements during training, PLM embeddings can first be generated and stored on disk. 
+This avoids repeatedly loading the PLM and tokenizer during training.
+
+**Generate PLM embeddings**
+
+Prepare a configuration file following: [generate_embedding.json](./examples/subject/generate_embedding.json).
+Then run:
 
 ```sh
 python exec/generate_embeddings.py examples/subject/generate_embedding.json 
 ```
 
-You can check Kaggle notebook [arxiv-cs-generate-embeddings-2gpus](https://www.kaggle.com/code/kariminf/arxiv-cs-generate-embeddings-2gpus) for a tutorial how embeddings were generated from [cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel) and stored to [cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings). 
+- A complete example of the embedding-generation process is available in the Kaggle notebook: [Kaggle:arxiv-cs-generate-embeddings-2gpus](https://www.kaggle.com/code/kariminf/arxiv-cs-generate-embeddings-2gpus)
+- The notebook generates embeddings from: [Kaggle:cs-papers-arxiv-multilabel](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-multilabel).
+- and stores the resulting embeddings in: [Kaggle:cs-papers-arxiv-embeddings](https://www.kaggle.com/datasets/kariminf/cs-papers-arxiv-embeddings). 
 
-To train a model, you need to create a training configuration similar to [train_subject_model.json](./examples/subject/train_subject_model.json).
-Then, execute this command:
+**Train the multi-label prediction head**
+
+Prepare a configuration file following: [train_subject_model.json](./examples/subject/train_subject_model.json).
+Then, run:
+
 ```sh
 python exec/train_mlp_head.py examples/subject/train_subject_model.json 
 ```
 
-To evaluate the model, ou need to create a test configuration similar to [test_subject_model.json](./examples/subject/test_subject_model.json).
-Then, execute this command:
+**Evaluate the subject model**
+
+Prepare a test configuration following: [test_subject_model.json](./examples/subject/test_subject_model.json).
+Then run:
+
 ```sh
-python exec/test_mlp_head.py examples/subject/test_subject_model.json 
+python exec/evaluate_mlp_head.py examples/subject/test_subject_model.json 
 ```
 
-This is the Kaggle notebook for training models on arXiv [cs-fields-multilabel-mlp-model-training](https://www.kaggle.com/code/kariminf/cs-fields-multilabel-mlp-model-training).
-The resulted models are stored in this [cs_fields_multilabel_mlp_model](https://www.kaggle.com/models/kariminf/cs_fields_multilabel_mlp_model).
-There is also a notebook to training a finetuned version here [cs-fields-multilabel-sbert-ft-model-training](https://www.kaggle.com/code/kariminf/cs-fields-multilabel-sbert-ft-model-training) which resulted in this model [cs_fields_sbert_finetuned_model](https://www.kaggle.com/models/kariminf/cs_fields_sbert_finetuned_model).
+**Pretrained subject models**
+
+- The model-training process is demonstrated in: [Kaggle:cs-fields-multilabel-mlp-model-training](https://www.kaggle.com/code/kariminf/cs-fields-multilabel-mlp-model-training).
+- The resulting model is available as: [Kaggle:cs_fields_multilabel_mlp_model](https://www.kaggle.com/models/kariminf/cs_fields_multilabel_mlp_model).
+- A fine-tuned Sentence-BERT version is also available:  [Kaggle:cs-fields-multilabel-sbert-ft-model-training](https://www.kaggle.com/code/kariminf/cs-fields-multilabel-sbert-ft-model-training).
+- with the resulting model: [cs_fields_sbert_finetuned_model](https://www.kaggle.com/models/kariminf/cs_fields_sbert_finetuned_model).
 
 #### 2.3. Expert modeling
 
-To model experts, you have to model the works and interests the same way we model subjects.
-So, we start by generating embeddings for both works and interests.
+Expert profiles are constructed from two sources of evidence:
 
+1. scientific publications;
+1. research interests.
+
+Works and interests are represented using the same field-prediction model used for subjects.
+
+**Generate embeddings**
+
+Generate embeddings for expert works:
 ```sh
 python exec/generate_embeddings.py examples/expert/generate_embedding_works.json 
+```
+
+Generate embeddings for expert interests:
+
+```sh
 python exec/generate_embeddings.py examples/expert/generate_embedding_interests.json 
 ```
 
-To model works and interests, use this script.  
-It will generate probabilities for works and interests and store them into a folder.
+**Generate field probabilities**
+
+Use the trained subject model to generate field probabilities for works and interests:
 
 ```sh
 python exec/model_works_interests.py examples/expert/model_works_interests.json
 ```
 
+**Construct expert profiles**
 
-<!-- TODO continue here -->
-to create experts profiles 
+Prepare a configuration file following: [model_experts.json](./examples/expert/model_experts.json).
+Then run:
+
+```sh
+python exec/model_experts.py examples/expert/model_experts.json 
+```
+
+The resulting expert profiles combine the field representations obtained from publications and research interests.
+
+<!-- The data folder on which we worked, can be downloaded here [Download expert matching tutorial](https://github.com/kariminf/sfematch/releases/download/0.1/data.zip)  -->
 
 ### 3.Matching
 
-### 3.2. Subject representation
+The final stage ranks experts according to their similarity to a subject.
 
-### 3.3. Expert representation
+The repository includes a real-world case study involving the assignment of jury members to final-year projects (FYPs) in a computer science institute.
+
+**Data availability**
+
+The raw expert and FYP data from this case study cannot be publicly released because they are proprietary to the institution.
+To support reproducibility while respecting these restrictions, the repository provides derived field representations and embeddings with opaque/anonymized identifiers.
+The released data allow researchers to reproduce the downstream representation and matching experiments without access to the underlying expert and FYP text.
+The corresponding files include:
+
+- field probabilities for expert works;
+- field probabilities for expert interests;
+- field probabilities for FYP subjects;
+- aggregated expert profiles;
+- manually assigned taxonomy labels;
+- anonymized subject and expert identifiers;
+- evaluation data and rankings where appropriate.
+
+The case-study files can be obtained from: [Kaggle real use case](https://github.com/kariminf/sfematch/releases/download/0.1/kaggle2.zip).
+The archive contains:
+
+- `proba/`: Probabilistic field representations for: expert publications; expert interests; FYP subjects.
+- `profiles/`: Expert profiles generated by combining publication and interest evidence.
+- `eval/`: Expert-representation evaluation against manual annotations.
+- `matching/`: Matching evaluation using the arXiv taxonomy as the reference representation.
+- `matching2/`: Matching evaluation using the average similarity across the three taxonomies.
+- `labels/`: Manual taxonomy annotations for FYP subjects and experts, together with anonymized jury assignments.
 
 ### 3.1. Expert scoring
 
+Prepare a configuration file following: [match_subject_experts.json](./examples/matching/match_subject_experts.json).
+The matching function can use: `cosine`, `euclidean` or `mae`.
+The number of retained candidates can be controlled using `top_k`.
+Set:`null` to retain all candidates for which a valid similarity score is available.
+
+Run:
+
+```sh
+python exec/ranking.py ./examples/matching/match_subject_experts.json 
+```
+
+### 3.2. Evaluation
+
+Prepare an evaluation configuration following: [eval_match.json](./examples/matching/eval_match.json).
+
+Then run:
+
+```sh
+python exec/evaluate_match.py ./examples/matching/eval_match.json 
+```
 
 ## Research and Reproducibility
 
-This project was 
+SFE-Match was developed as part of research on interpretable expert matching for academic subject–expert assignment.
+The repository separates the main components of the experimental pipeline:
 
-The preprocessing pipeline is designed to separate:
-- source data, such as arXiv and OpenAlex;
-- taxonomy mappings;
-- expert metadata and interests;
-- processed textual datasets;
-- precomputed PLM embeddings.
+- source datasets, such as arXiv and OpenAlex;
+- taxonomy definitions and mappings;
+- expert metadata and research interests;
+- processed publication data;
+- PLM embeddings;
+- field-probability representations;
+- expert profiles;
+- matching and evaluation results.
 
-This separation makes it possible to reproduce individual stages of the pipeline without repeating the entire data collection process. 
+This separation allows individual stages of the pipeline to be reproduced without necessarily repeating the entire data-collection process.
+
+**Restricted real-world data**
+
+The raw expert and FYP data used in the institutional case study are not distributed because they are proprietary to the institution.
+Instead, we provide derived representations with opaque identifiers, including field-probability vectors and embeddings. These derived artefacts support reproduction of downstream experiments while avoiding redistribution of the underlying restricted data.
+Researchers should distinguish between:
+
+- full reproduction of the data-collection process, which requires access to the original sources and institutional data; and
+- reproduction of representation and matching experiments, which can be performed using the released derived data.
+
+**Supporting files**
+
+The following release archives contain the files required for reproducing the tutorial and experiments.
+
+- [Examples](https://github.com/kariminf/sfematch/releases/download/0.1/examples.zip):
+Contains example input files, expert information, taxonomy mappings, and configuration files used throughout the tutorial.
+- [Data](https://github.com/kariminf/sfematch/releases/download/0.1/data.zip): 
+Contains the data generated by the preprocessing pipeline.
+- [Kaggle real use case](https://github.com/kariminf/sfematch/releases/download/0.1/kaggle2.zip):
+Contains the outputs associated with the real-world matching case study described in Section 3.
+- [Kaggle tuto folder](https://github.com/kariminf/sfematch/releases/download/0.1/kaggle_tuto.zip): Contains the outputs produced from the tutorial using the released case-study data.
+
+**Kaggle resources**
+
+Notebooks, datasets, and models associated with the project are available in the following Kaggle collection: 
+[subject_field_expert](https://www.kaggle.com/work/collections/19009995).
+
+## Citation
+
+If you use SFE-Match, its datasets, models, or preprocessing pipeline in your research, please cite the associated paper:
+
+```tex
+```
+
+The complete citation will be added once the paper is published.
 
 ## License
 

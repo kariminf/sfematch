@@ -21,7 +21,8 @@
 
 import requests
 import xml.etree.ElementTree as ET
-from typing import List, Dict, Optional
+
+from typing import List, Optional
 
 from . import Work, AuthorCandidate
 

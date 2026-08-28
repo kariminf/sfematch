@@ -19,21 +19,23 @@
 # limitations under the License.
 #
 
-import sys
-import os
 import argparse
 import json
+import os
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sfematch.collect.openalex import get_ids as get_openalex_ids
+from sfematch.collect.dblp          import get_ids as get_dblp_ids
 from sfematch.collect.google_sholar import get_ids as get_gs_ids
-from sfematch.collect.dblp import get_ids as get_dblp_ids
-from sfematch.collect.orcid import get_ids as get_orcid_ids
-from sfematch.collect.ieee import get_ids as get_ieee_ids
+from sfematch.collect.ieee          import get_ids as get_ieee_ids
+from sfematch.collect.openalex      import get_ids as get_openalex_ids
+from sfematch.collect.orcid         import get_ids as get_orcid_ids
+from sfematch.collect.other         import get_github_ids, get_linkedin_ids, get_websites
+from sfematch.collect.researchgate  import get_ids as get_rg_ids
 from sfematch.collect.sciencedirect import get_ids as get_sd_ids
-from sfematch.collect.researchgate import get_ids as get_rg_ids
-from sfematch.collect.other import get_github_ids, get_linkedin_ids, get_websites
+
+
 
 MAX_IDS = 5
 DEF_OUT = "./experts_info_choices.json"

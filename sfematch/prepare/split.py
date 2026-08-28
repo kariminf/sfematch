@@ -19,10 +19,9 @@
 # limitations under the License.
 #
 
-import sys
 import numpy as np
 import pandas as pd
-
+import sys
 
 NON_FIELD_COLUMNS = ["id", "title", "abstract", "keywords"]
 

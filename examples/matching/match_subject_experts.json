@@ -1,0 +1,12 @@
+{
+    "subject_ids": "./kaggle/proba/ids_fyp_subjects.npy",
+    "subject_probs": "./kaggle/proba/proba_fyp_subjects_sbert_ccsf.npy",
+
+    "expert_ids": "./kaggle/profiles/expert_ids.npy",
+    "expert_probs": "./kaggle/profiles/mixed_max_a0.5_sbert_ccsf.npy",
+
+    "output_match": "./kaggle_tuto/match_max_a0.5_sbert_ccsf_cosine.json",
+
+    "top_k": null,
+    "sim": "cosine"
+}

@@ -35,7 +35,7 @@ setup(
     author_email = "kariminfo0@gmail.com",
     description = ("Experts matching using field representations"),
     license = "Apache-2.0",
-    keywords = "arabic nlp languages poetry prosody",
+    keywords = " Academic_Expert_Matching Expert_Finding Expert_Representation Natural_Language_Processing Research_Taxonomies Information_Retrieval",
     url = "https://github.com/kariminf/sfematch",
     packages=["sfematch"],
     scripts=["exec"],

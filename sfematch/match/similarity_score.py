@@ -34,13 +34,15 @@ corresponding rows), OR pairwise across all rows of A vs all rows of B
 if `pairwise=True` — see docstrings below.
 """
 
-from typing import Union
 import numpy as np
+
+from typing import Union
+
 
 ArrayLike = Union[list, np.ndarray]
 
 
-def cosine_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = False) -> np.ndarray:
+def cosine_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = True) -> np.ndarray:
     """
     Compute cosine similarity between vectors or matrices.
 
@@ -136,7 +138,7 @@ def euclidean_distance(a: np.ndarray, b: np.ndarray, pairwise: bool):
         return np.linalg.norm(a - b, axis=1), False
 
 
-def euclidean_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = False) -> np.ndarray:
+def euclidean_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = True) -> np.ndarray:
     """
     Compute a similarity score derived from Euclidean distance.
 
@@ -178,7 +180,7 @@ def euclidean_similarity_bounded(
     a: ArrayLike,
     b: ArrayLike,
     normalized: bool = False,
-    pairwise: bool = False,
+    pairwise: bool = True,
 ) -> np.ndarray:
     """
     Compute Euclidean similarity for vectors with a known bounded range,
@@ -271,7 +273,7 @@ def mae_distance(a: np.ndarray, b: np.ndarray, pairwise: bool):
         return np.mean(np.abs(a - b), axis=1), False
 
 
-def mae_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = False) -> np.ndarray:
+def mae_similarity(a: ArrayLike, b: ArrayLike, pairwise: bool = True) -> np.ndarray:
     """
     Compute a similarity score derived from mean absolute error (MAE):
 

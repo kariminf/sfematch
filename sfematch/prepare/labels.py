@@ -19,9 +19,8 @@
 # limitations under the License.
 #
 
-import sys
-
 import pandas as pd
+import sys
 
 # ---------------------------------------------------------------------------
 # Mapping 1: arXiv cs.* -> ACM CCS 2012, Level 1

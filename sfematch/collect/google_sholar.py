@@ -20,11 +20,9 @@
 #
 
 import re
-from dataclasses import dataclass, field, asdict
-from typing import Optional, List
 
 from scholarly import scholarly, ProxyGenerator
-
+from typing import Optional, List
 
 from . import Work, AuthorCandidate
 from .tools import web_search

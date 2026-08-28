@@ -23,12 +23,15 @@
 Simple multilabel classifier: embedding -> MLP -> per-label logit -> sigmoid.
 Trained with BCEWithLogitsLoss (numerically stabler than sigmoid + BCELoss).
 """
+
 import numpy as np
 import torch
+
+from dataclasses import dataclass, fields, asdict
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
 from typing import Sized
-from dataclasses import dataclass, fields, asdict
+
 
 
 @dataclass
@@ -278,24 +281,4 @@ def load_model(path, device=None):
     return model
 
 
-if __name__ == "__main__":
-    # smoke test with synthetic data
-    np.random.seed(0)
-    n, hidden, n_labels = 2000, 64, 5
-    X = np.random.randn(n, hidden).astype(np.float32)
-    Y = (np.random.rand(n, n_labels) > 0.7).astype(np.float32)
 
-    n_train = int(n * 0.8)
-    X_train, Y_train = X[:n_train], Y[:n_train]
-    X_val, Y_val = X[n_train:], Y[n_train:]
-
-    model = train_multilabel_model(X_train, Y_train, X_val, Y_val, epochs=3)
-    proba = predict_proba(model, X_val[:5])
-    print("proba shape:", proba.shape)
-    print(proba)
-
-    save_model(model, "/tmp/multilabel_mlp.pt")
-    loaded = load_model("/tmp/multilabel_mlp.pt")
-    proba2 = predict_proba(loaded, X_val[:5])
-    assert np.allclose(proba, proba2, atol=1e-5)
-    print("save/load roundtrip OK")

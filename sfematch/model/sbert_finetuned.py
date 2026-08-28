@@ -29,12 +29,16 @@ dynamically pads each batch to its own longest sequence (cheaper than always
 padding to max_length). FP16 (autocast + GradScaler) is used throughout for
 speed/memory on T4-class GPUs.
 """
+
+
 import numpy as np
 import torch
+
 from torch import nn
 from torch.utils.data import Dataset, DataLoader
-from transformers import AutoTokenizer, AutoModel
 from tqdm.auto import tqdm
+from transformers import AutoTokenizer, AutoModel
+
 
 
 def mean_pool(last_hidden_state, attention_mask):

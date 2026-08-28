@@ -19,16 +19,14 @@
 # limitations under the License.
 #
 
-import sys
-import os
 import argparse
-import json
+import os
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sfematch.prepare.format import json_to_tsv
 from sfematch.prepare.arxiv_fields import *
-
+from sfematch.prepare.format import json_to_tsv
 
 # ---------------------------------------------------------------------------
 # CLI

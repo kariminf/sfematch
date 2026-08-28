@@ -20,12 +20,13 @@
 #
 
 import re
-from typing import List, Dict, Optional
-
-from . import Work, AuthorCandidate
-from .tools import fetch_page, web_search
 
 from bs4 import BeautifulSoup
+from typing import List
+
+from . import AuthorCandidate
+from .tools import fetch_page, web_search
+
 
 SCIENCEDIRECT_AUTHOR = "sciencedirect.com/author"
 

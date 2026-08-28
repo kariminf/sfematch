@@ -30,14 +30,12 @@ to identify yourself via a `mailto` param — set OPENALEX_EMAIL below
 if you want that.
 """
 
-
-
 import json
-from dataclasses import dataclass, field, asdict
-from typing import Optional, Union, List
-from pathlib import Path
-
 import requests
+
+from pathlib import Path
+from typing import Optional, Union, List
+
 from . import Work, AuthorCandidate
 
 BASE_URL = "https://api.openalex.org"

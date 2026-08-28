@@ -21,16 +21,15 @@
 
 # from __future__ import annotations
 
-import os
 import json
-from typing import Callable, Optional, Tuple
+import numpy as np
+import os
+import pandas as pd
+import torch
 
 from dataclasses import dataclass, fields, asdict
-
-import pandas as pd
-import numpy as np
 from tqdm.auto import tqdm
-import torch
+from typing import Callable, Tuple
 
 
 def iter_titles_abstracts(tsv_path, batch_size=2000):

@@ -19,14 +19,15 @@
 # limitations under the License.
 #
 
-import json
-from pathlib import Path
-import argparse
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
-SRC_DIR = Path("./Works")   # folder with one JSON file per work
-OUT_FILE = Path("./abstract_report.json")
+import argparse
+import json
+
+from pathlib import Path
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise        import cosine_similarity
+
+
 SIMILARITY_THRESHOLD = 0.9
 
 

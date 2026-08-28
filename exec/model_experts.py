@@ -19,50 +19,17 @@
 # limitations under the License.
 #
 
-"""
-model_experts.py
-
-Builds per-expert models by pooling the taxonomy classifier outputs produced by
-model_works_interests.py, then mixes the "interest" model I and the "work"
-model W with several alpha weights.
-
-Inputs
-------
-ExpertsModeling/experts_interests.json
-    {expert_id: [interest_id, interest_id, ...], ...}
-
-ExpertsModeling/experts_works.json
-    {expert_id: [{"id": work_id, "pos": ..., "nbr": ...}, ...], ...}
-
-FinalModels/interests/  and  FinalModels/works/
-    Output of model_works_interests.py: ids.npy + {tax}_probs.npy
-    for tax in {arxiv, ccs2012l1, ccsf}.
-
-Per expert / per taxonomy
---------------------------
-I = pool(probs of the expert's interests)   pool in {max, avg}
-W = pool(probs of the expert's works)       pool in {max, avg}
-Expert = alpha * W + (1 - alpha) * I        alpha in {0.0, 0.25, 0.5, 0.75, 1.0}
-
-Output
-------
-FinalModels/experts/
-    ids_{pool}_sbert_{tax}.npy               -> expert ids, row order for the file below
-    mixed_{pool}_a{alpha}_sbert_{tax}.npy    -> (n_experts, n_labels) mixed model
-"""
-
 import argparse
 import json
+import numpy as np
 import os
 import sys
-from pathlib import Path
 
-import numpy as np
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sfematch.model.datasets import load_embeddings, load_tsv
-from sfematch.model.experts import pool_expert_vector, build_expert_models
+from sfematch.model.experts import build_expert_models
 
 
 # --------------------------------------------------------------------------
